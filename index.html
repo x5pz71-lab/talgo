@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Buscador de Fichas</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg: #0b1020; --surface: #121a2d; --card: #161f33; --card-hover: #1d2946;
+    --border: #273552; --accent: #5b8cff; --accent2: #86b9ff; --text: #edf2ff;
+    --text-muted: #8ea3c7; --text-dim: #64748b; --tag-bg: #233458; --tag-text: #9bc7ff;
+    --green: #10b981; --red: #ef4444; --yellow: #f59e0b; --radius: 16px; --radius-sm: 10px;
+  }
+  body {
+    background:
+      radial-gradient(circle at top right, rgba(91,140,255,0.35), transparent 25%),
+      radial-gradient(circle at bottom left, rgba(16,185,129,0.18), transparent 20%),
+      var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* LOGIN SCREEN */
+  .login-screen {
+    position: fixed; inset: 0; background: var(--bg); z-index: 999;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .login-box {
+    background: linear-gradient(180deg, #182343, #151d30);
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    padding: 32px 24px;
+    width: 100%; max-width: 360px;
+    text-align: center;
+    box-shadow: 0 18px 50px rgba(16,24,40,0.45);
+  }
+  .login-logo { font-size: 48px; margin-bottom: 12px; }
+  .login-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .login-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-align: right; margin-bottom: 6px; }
+  .login-input {
+    width: 100%; background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 13px 14px; font-size: 15px; color: var(--text);
+    outline: none; margin-bottom: 14px; text-align: left; direction: ltr;
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--accent); }
+  .login-btn {
+    width: 100%; background: var(--accent); border: none; color: #fff;
+    border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700;
+    cursor: pointer; margin-bottom: 10px; transition: background 0.2s;
+  }
+  .login-btn:active { background: #2563eb; }
+  .login-error { color: var(--red); font-size: 13px; margin-top: 4px; display: none; }
+  .login-viewer-btn {
+    background: none; border: 1.5px dashed var(--border); color: var(--text-muted);
+    border-radius: 12px; padding: 11px; font-size: 14px; cursor: pointer; width: 100%;
+    transition: all 0.2s;
+  }
+  .login-viewer-btn:hover { border-color: var(--accent); color: var(--accent2); }
+
+  /* ROLE BADGE */
+  .role-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    cursor: pointer;
+  }
+  .role-admin { background: #1e3a5f; color: var(--accent2); border: 1px solid var(--accent); }
+  .role-viewer { background: #1a2e1a; color: var(--green); border: 1px solid var(--green); }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #10182b 0%, #1d2c4d 48%, #162444 100%);
+    padding: 20px 16px 16px;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid rgba(91,140,255,0.18);
+    box-shadow: 0 12px 30px rgba(15,23,42,0.2);
+  }
+  .header-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .logo-icon {
+    width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), #7c3aed);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .header-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: #fff; }
+  .header-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .header-right { margin-right: auto; display: flex; align-items: center; gap: 8px; }
+  .add-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm);
+    padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 5px; transition: background 0.2s; white-space: nowrap;
+  }
+  .add-btn:active { background: #2563eb; }
+
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 10px; }
+  .search-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 15px; }
+  .search-input {
+    width: 100%; background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 12px 40px 12px 12px; font-size: 15px; color: var(--text);
+    outline: none; transition: border-color 0.2s; direction: ltr; text-align: left;
+  }
+  .search-input::placeholder { color: var(--text-dim); }
+  .search-input:focus { border-color: var(--accent); }
+  .search-clear {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    background: var(--border); border: none; color: var(--text-muted); width: 22px;
+    height: 22px; border-radius: 50%; font-size: 12px; cursor: pointer;
+    display: none; align-items: center; justify-content: center;
+  }
+  .search-clear.show { display: flex; }
+  .stats-bar { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  .stats-bar span { color: var(--accent2); font-weight: 600; }
+
+  /* FILTERS */
+  .filters {
+    display: flex; gap: 7px; overflow-x: auto; padding: 10px 16px; scrollbar-width: none;
+    position: sticky; top: 118px; z-index: 55;
+    background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.72));
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(91,140,255,0.10);
+    scroll-snap-type: x proximity;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter-btn {
+    flex-shrink: 0; background: var(--surface); border: 1.5px solid var(--border);
+    color: var(--text-muted); border-radius: 20px; padding: 7px 14px; font-size: 12px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .filter-btn:hover {
+    border-color: #5b8cff; color: var(--accent2); transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(59,130,246,0.14);
+  }
+  .filter-btn:active { transform: scale(0.98); }
+  .filter-btn.active {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    border-color: #5b8cff;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(59,130,246,0.32);
+  }
+
+  /* CARDS */
+  .cards-container { padding: 12px 16px 0; }
+  .card {
+    background: linear-gradient(180deg, #18213a, #151d2f);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+    position: relative;
+    transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.18s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(15,23,42,0.12);
+  }
+  .card:hover { transform: translateY(-2px); border-color: #314b77; box-shadow: 0 10px 30px rgba(15,23,42,0.2); }
+  .card:active { transform: scale(0.99); }
+  .card.expanded { border-color: var(--accent); }
+  .card-header { display: flex; align-items: flex-start; gap: 10px; }
+  .card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .card-info { flex: 1; min-width: 0; }
+  .card-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+  .card-code { font-size: 12px; color: var(--accent2); font-weight: 700; font-family: 'Courier New', monospace; }
+  .card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .card-btn { width: 30px; height: 30px; border-radius: var(--radius-sm); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; transition: opacity 0.15s; }
+  .card-btn:active { opacity: 0.7; }
+  .btn-edit { background: var(--tag-bg); color: var(--accent2); }
+  .btn-delete { background: #2d1515; color: var(--red); }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .tag { background: linear-gradient(135deg, #263a59, #1d2d4a); color: var(--tag-text); border-radius: 7px; padding: 3px 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+  .tag.location { background: linear-gradient(135deg, #153022, #0f2418); color: var(--green); }
+  .tag.system { background: linear-gradient(135deg, #3a2510, #2a1c0c); color: var(--yellow); }
+  .card-arabic { margin-top: 8px; padding: 8px 10px; background: #0f1a2e; border-radius: 8px; border-right: 3px solid var(--accent); direction: rtl; text-align: right; }
+  .arabic-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 3px; flex-direction: row-reverse; }
+  .arabic-label { font-size: 10px; color: var(--text-muted); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+  .arabic-value { font-size: 13px; color: #93c5fd; font-weight: 600; line-height: 1.4; }
+  .arabic-phonetic { font-size: 12px; color: #6b7a9b; }
+  .translate-btn {
+    margin-top: 8px; background: none; border: 1px dashed var(--border); color: var(--text-muted);
+    border-radius: 7px; padding: 5px 10px; font-size: 11px; cursor: pointer; width: 100%;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .translate-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .card-details { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .card.expanded .card-details { display: block; }
+  .detail-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .detail-label { color: var(--text-muted); min-width: 80px; font-size: 12px; }
+  .detail-value { color: var(--text); font-weight: 500; }
+
+  /* EMPTY */
+  .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--text-dim); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: flex-end; backdrop-filter: blur(3px); }
+  .modal-overlay.show { display: flex; }
+  .modal { background: var(--card); border-radius: 20px 20px 0 0; border: 1px solid var(--border); padding: 20px 20px 40px; width: 100%; max-height: 85vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 18px; }
+  .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 18px; color: var(--text); }
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .form-input, .form-select { width: 100%; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 13px; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.2s; -webkit-appearance: none; direction: ltr; text-align: left; }
+  .form-input:focus, .form-select:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--text-dim); }
+  .form-select option { background: var(--surface); }
+  .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-cancel { flex: 1; background: var(--surface); border: 1.5px solid var(--border); color: var(--text-muted); border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .btn-save { flex: 2; background: var(--accent); border: none; color: #fff; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .btn-save:active { background: #2563eb; }
+
+  /* CONFIRM */
+  .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .confirm-overlay.show { display: flex; }
+  .confirm-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 20px; max-width: 320px; width: 100%; text-align: center; animation: popIn 0.2s ease; }
+  @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .confirm-icon { font-size: 40px; margin-bottom: 12px; }
+  .confirm-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .confirm-text { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .confirm-btns { display: flex; gap: 10px; }
+  .btn-no { flex: 1; background: var(--surface); border: 1.5px solid var(--border); color: var(--text); border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-yes { flex: 1; background: var(--red); border: none; color: #fff; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1e3a5f; border: 1px solid var(--accent); color: var(--accent2); padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 400; white-space: nowrap; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .fab { position: fixed; bottom: 20px; left: 16px; width: 54px; height: 54px; background: linear-gradient(135deg, #6aa8ff, #7c5cff); border-radius: 50%; border: none; color: #fff; font-size: 24px; cursor: pointer; box-shadow: 0 8px 26px rgba(91,140,255,0.45); display: flex; align-items: center; justify-content: center; z-index: 50; transition: transform 0.2s; }
+  .fab:active { transform: scale(0.92); }
+
+  /* Category colors */
+  .cat-pantograph { background: #1a1f3a; color: #818cf8; }
+  .cat-electric { background: #1a2e1a; color: #34d399; }
+  .cat-doors { background: #2a1810; color: #fb923c; }
+  .cat-hvac { background: #0f2a2a; color: #22d3ee; }
+  .cat-eaa { background: #2a1020; color: #f472b6; }
+  .cat-motor { background: #1a1a10; color: #fbbf24; }
+  .cat-illumination { background: #1f1a10; color: #fcd34d; }
+  .cat-brake { background: #1f1010; color: #f87171; }
+  .cat-wc { background: #101f1f; color: #5eead4; }
+  .cat-interior { background: #1a1030; color: #c084fc; }
+  .cat-default { background: #1a1f2e; color: #94a3b8; }
+
+  /* Viewer locked overlay hint */
+  .viewer-hint {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #1a2e1a; border: 1px solid var(--green); color: var(--green);
+    padding: 9px 18px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    z-index: 50; display: flex; align-items: center; gap: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">🔧</div>
+    <div class="login-title">Buscador de Fichas</div>
+    <div class="login-sub">نظام إدارة قطع الغيار</div>
+    <label class="login-label">🔐 كلمة سر المسؤول</label>
+    <input type="password" class="login-input" id="pwdInput" placeholder="أدخل كلمة السر..." onkeydown="if(event.key==='Enter') tryLogin()">
+    <div class="login-error" id="loginError">❌ كلمة السر غلط، حاول مرة ثانية</div>
+    <button class="login-btn" onclick="tryLogin()">🔓 دخول كمسؤول</button>
+    <button class="login-viewer-btn" onclick="enterViewer()">👁️ دخول للمشاهدة فقط</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="mainApp" style="display:none">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-icon">🔧</div>
+      <div>
+        <div class="header-title">Buscador de Fichas</div>
+        <div class="header-sub">نظام إدارة قطع الغيار</div>
+      </div>
+      <div class="header-right">
+        <span class="role-badge" id="roleBadge" onclick="logout()"></span>
+        <button class="add-btn" id="addBtn" onclick="openModal()" style="display:none">+ Add</button>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search part, code, location..." oninput="handleSearch(this.value)">
+      <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="stats-bar" id="statsBar">Loading...</div>
+  </div>
+
+  <div class="filters" id="filtersBar"></div>
+  <div class="cards-container" id="cardsContainer"></div>
+
+  <!-- FAB only for admin -->
+  <button class="fab" id="fabBtn" onclick="openModal()" style="display:none">+</button>
+
+  <!-- Viewer hint -->
+  <div class="viewer-hint" id="viewerHint" style="display:none">👁️ وضع المشاهدة — لا يمكن التعديل</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">➕ New Part</div>
+    <div class="form-group"><label class="form-label">Part Name *</label><input type="text" class="form-input" id="fName" placeholder="e.g. PANTOGRAPH Sliding Strip"></div>
+    <div class="form-group"><label class="form-label">Material Code</label><input type="text" class="form-input" id="fCode" placeholder="e.g. 10060691"></div>
+    <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" id="fLocation" placeholder="e.g. HM-5R"></div>
+    <div class="form-group">
+      <label class="form-label">Subsystem</label>
+      <select class="form-select" id="fSystem">
+        <option value="">-- Select --</option>
+        <option>PANTOGRAPH / HIGH TENS.</option><option>ELECTRIC</option><option>DOORS</option>
+        <option>HVAC</option><option>EAA</option><option>MOTOR</option><option>ILLUMINATION</option>
+        <option>Brake</option><option>WC</option><option>INTERIOR / MECHANICAL</option>
+        <option>GENSET</option><option>TOOLS</option><option>Water</option>
+        <option>Interiors</option><option>Refrigerators</option><option>Security cameras</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Utilization / Description</label><input type="text" class="form-input" id="fUtil" placeholder="e.g. High voltage, Cafeteria..."></div>
+    <div class="form-group"><label class="form-label">الترجمة العربية</label><input type="text" class="form-input" id="fTrans" placeholder="مثال: بيك أب DBZ" dir="rtl" style="text-align:right"></div>
+    <div class="form-group"><label class="form-label">النطق</label><input type="text" class="form-input" id="fPhonetic" placeholder="مثال: دي بي زد" dir="rtl" style="text-align:right"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="savePart()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Delete Part?</div>
+    <div class="confirm-text" id="confirmText">This action cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="btn-no" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-yes" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PASSWORD = 'ahmad@054';
+const CATEGORIES = ['Todos','PANTOGRAPH / HIGH TENS.','ELECTRIC','DOORS','HVAC','EAA','MOTOR','ILLUMINATION','Brake','WC'];
+const SYSTEM_ICONS = {
+  'PANTOGRAPH / HIGH TENS.':{icon:'⚡',cls:'cat-pantograph'},
+  'ELECTRIC':{icon:'🔌',cls:'cat-electric'},
+  'DOORS':{icon:'🚪',cls:'cat-doors'},
+  'HVAC':{icon:'❄️',cls:'cat-hvac'},
+  'EAA':{icon:'🌀',cls:'cat-eaa'},
+  'MOTOR':{icon:'⚙️',cls:'cat-motor'},
+  'ILLUMINATION':{icon:'💡',cls:'cat-illumination'},
+  'Brake':{icon:'🛑',cls:'cat-brake'},
+  'WC':{icon:'🚿',cls:'cat-wc'},
+  'INTERIOR / MECHANICAL':{icon:'🔩',cls:'cat-interior'},
+  'Interiors':{icon:'🪑',cls:'cat-interior'},
+  'GENSET':{icon:'🔋',cls:'cat-motor'},
+  'TOOLS':{icon:'🛠️',cls:'cat-default'},
+  'Water':{icon:'💧',cls:'cat-hvac'},
+  'Refrigerators':{icon:'🧊',cls:'cat-hvac'},
+  'Security cameras':{icon:'📷',cls:'cat-default'},
+};
+
+const INITIAL_DATA = [
+  {name:"Useful alento pantograph",code:"5207186A",location:"D-1-2",system:"PANTOGRAPH / HIGH TENS.",util:"Aleron"},
+  {name:"Ecometer",code:"10040722",location:"",system:"PANTOGRAPH / HIGH TENS.",util:"High voltage meter"},
+  {name:"Spray tests smoke detectors",code:"10018889",location:"",system:"ELECTRIC",util:""},
+  {name:"HMI Refrigerator Monitor",code:"10049409",location:"",system:"Refrigerators",util:"Car 5"},
+  {name:"MCB control card",code:"10067179",location:"",system:"ELECTRIC",util:""},
+  {name:"TAR car with cable",code:"5127401A",location:"M-4-2",system:"MOTOR",util:"TAR"},
+  {name:"Wago 4 pole male",code:"416094",location:"",system:"ELECTRIC",util:""},
+  {name:"Wago 4 pole female",code:"416095",location:"",system:"ELECTRIC",util:""},
+  {name:"Kitchen access door set",code:"5142514A",location:"",system:"DOORS",util:"Cafeteria"},
+  {name:"Remote box high voltage measuring",code:"10043746",location:"G-0",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Pole",code:"10053719",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Disturbance cable",code:"10053720",location:"G-2-1",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Distin catenary clamp",code:"10065652",location:"Q-1-1",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"230V enchife pictogram",code:"5164371A",location:"D-3-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"Pilot indicator light small for PHs desk",code:"10035109",location:"D-4-3",system:"ELECTRIC",util:""},
+  {name:"Indicator button",code:"1008284",location:"",system:"ELECTRIC",util:""},
+  {name:"Indicator pilot lamp",code:"10044265",location:"M-3-3",system:"ELECTRIC",util:""},
+  {name:"Monitoring Station PC CCTV",code:"5136607A",location:"D-2-1",system:"Security cameras",util:"Camaras de seguridad"},
+  {name:"Grease exterior doors",code:"10047662",location:"CH-R3",system:"DOORS",util:"Perfil elastomero"},
+  {name:"Bar door bar handle",code:"10077757",location:"D-3-2",system:"DOORS",util:""},
+  {name:"C05 Cafeteria door bar brake",code:"10077413",location:"",system:"DOORS",util:"Cafeteria"},
+  {name:"PMR led light",code:"5007930A",location:"M-3-3",system:"ILLUMINATION",util:"Luminarias WC"},
+  {name:"Led light cars",code:"10026486",location:"M-3-4",system:"ILLUMINATION",util:"Luminaria coches"},
+  {name:"Trash Halls",code:"5124221A",location:"F-3-3",system:"Interiors",util:"Pepeleras de coches"},
+  {name:"Paper bin",code:"5149142A",location:"",system:"Interiors",util:"Papeleras"},
+  {name:"Soap pumping valve",code:"10065189",location:"D-2-3",system:"Interiors",util:"Jaboneras"},
+  {name:"Right support blind sunshade",code:"5193490A",location:"A-1-3",system:"Interiors",util:"Estor coches"},
+  {name:"Left support blind sunshade",code:"5193489A",location:"A-1-3",system:"Interiors",util:"Estor coches"},
+  {name:"ABB battery charger temperature sensor",code:"10051443",location:"",system:"ELECTRIC",util:"ABB Battery Charger"},
+  {name:"Earth braid door battery modules Ground",code:"5144195A",location:"C-2-3",system:"ELECTRIC",util:""},
+  {name:"Speaker for Cars",code:"5125226A",location:"D-4-1",system:"ELECTRIC",util:""},
+  {name:"Continuous Isolation Monitor",code:"10040507",location:"M-3-3",system:"ELECTRIC",util:""},
+  {name:"Thermal paste",code:"123135",location:"CH-R-1",system:"TOOLS",util:""},
+  {name:"Flange L 150mm",code:"10038037",location:"D-3-1",system:"ELECTRIC",util:""},
+  {name:"Circular 7 pin connector",code:"10044084",location:"D-1-3",system:"ELECTRIC",util:""},
+  {name:"Useful alento pantograph",code:"5207186B",location:"",system:"PANTOGRAPH / HIGH TENS.",util:"Aleron"},
+  {name:"ELECTRONICS OUTDOOR DOORS DCU",code:"10048442",location:"R-4-2",system:"DOORS",util:"PUERTAS EXTERIORES"},
+  {name:"KETA torica board",code:"10061283",location:"",system:"ELECTRIC",util:""},
+  {name:"KETA complete distributor valve",code:"10040730",location:"H-0",system:"ELECTRIC",util:""},
+  {name:"EP compact EPC-C without parking brake",code:"5125721A",location:"HM 1R",system:"Brake",util:"Coches con freno"},
+  {name:"EP compact EPC-CP with parking brake",code:"5125720A",location:"HM 1R",system:"Brake",util:"Coches con freno"},
+  {name:"External door silencer Filter",code:"10072501",location:"D-4-2",system:"DOORS",util:""},
+  {name:"2P 10A switch",code:"10025613",location:"",system:"ELECTRIC",util:""},
+  {name:"Flashlight Halogen lamp",code:"10024950",location:"D-4-2",system:"TOOLS",util:"PHs"},
+  {name:"WC door",code:"5111676A",location:"",system:"WC",util:"DOORS"},
+  {name:"Water shower pressure regulator bide wc tap",code:"10037180",location:"D-3-3",system:"WC",util:"Panel agua WC"},
+  {name:"Manometer 0 to 10 bar",code:"610033",location:"Q-3-3",system:"Water",util:""},
+  {name:"Water purge electrovalve valve",code:"610249",location:"M-3-1",system:"Water",util:""},
+  {name:"Right rearview camera",code:"5130749A",location:"",system:"Security cameras",util:""},
+  {name:"Left rearview camera",code:"5130748A",location:"G-3",system:"Security cameras",util:""},
+  {name:"Riom-s car",code:"5127408A",location:"H-1",system:"ELECTRIC",util:""},
+  {name:"WSP anti-lock",code:"5131889B",location:"W-2-1",system:"Brake",util:"Freno Motriz"},
+  {name:"DNRA anti-lock",code:"5131889A",location:"H-0",system:"Brake",util:"Freno Motriz"},
+  {name:"PH CRYSTAL PROTECTOR FILM",code:"10049980",location:"R-4-3",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"THERMAL MAGNETO Circuit Breaker 1.6 A",code:"10032600",location:"D-1-2",system:"ELECTRIC",util:"Hvac Evaporadores"},
+  {name:"SENSOR INTERIOR DOORS S7",code:"5125901A",location:"M-3-3",system:"DOORS",util:""},
+  {name:"COFFEE MAKER",code:"10055301",location:"",system:"Interiors",util:"Cafeteria"},
+  {name:"1A FUSE",code:"412430",location:"D-2-3",system:"ELECTRIC",util:""},
+  {name:"GENERATOR GRILLE",code:"5129645A",location:"HM-1R",system:"GENSET",util:""},
+  {name:"Dopler radar connector",code:"5132593A",location:"F-2-2",system:"MOTOR",util:"ETCS ERTMS Radar"},
+  {name:"ROLDANA DOOR WC",code:"10043997",location:"D-3-2",system:"WC",util:""},
+  {name:"Wiper Motor",code:"5406179A",location:"F-2-2",system:"MOTOR",util:""},
+  {name:"EXTERNAL DOOR COVER",code:"5134981A",location:"Q-8-3",system:"DOORS",util:""},
+  {name:"POWER SUPPLY",code:"5125247A",location:"M-4-3",system:"ELECTRIC",util:"Power Supply for VoD"},
+  {name:"INTERIOR DOORS BUTTON",code:"5125861",location:"M-3-3",system:"DOORS",util:""},
+  {name:"PANTOGRAPH Sliding Strip",code:"10060691",location:"HM-5R",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"T5 8KW fluorescent tube",code:"442029",location:"Q-5-3",system:"ILLUMINATION",util:""},
+  {name:"G13 18KW fluorescent tube",code:"442032",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"Ceiling hall Light VESTIB TALGO AVRIL G3",code:"5097681A",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"ROOF LIGHT",code:"5132208A",location:"F-2-1",system:"ILLUMINATION",util:""},
+  {name:"5/2 VIAS PNEUMATIC VALVE For Damper",code:"10046463",location:"Q-6-3",system:"ELECTRIC",util:"Aire"},
+  {name:"EXTRACTING UNIT",code:"5115927A",location:"HM-4R",system:"PANTOGRAPH / HIGH TENS.",util:"CABLES DE ALTA TENSION"},
+  {name:"EXTRACTOR CYLINDER",code:"10046469",location:"Q-6-3",system:"ELECTRIC",util:"Cars Dampers"},
+  {name:"HIGH MOTOR CABLE CEILING",code:"5132201A",location:"H-1-0",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"HIGH CABLE TRENCILLA",code:"5133431A",location:"Q-2-3",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"BATTERY CHARGER",code:"5109997A",location:"HM-4R",system:"ELECTRIC",util:""},
+  {name:"ELECTRICAL CABINET CHARGER BATTERIES",code:"5128404A",location:"G-3",system:"ELECTRIC",util:""},
+  {name:"EVAPORATOR MOTOR for HVAC",code:"10046471",location:"G-1-0",system:"HVAC",util:"Evaporadores, condensadores"},
+  {name:"HIGH PRESSURE FAN NOISE DAMPER",code:"10004341",location:"",system:"HVAC",util:""},
+  {name:"EAA EXTRACTOR MOTOR HVAC",code:"10046504",location:"H-3",system:"EAA",util:""},
+  {name:"VCU CAR 1",code:"5127405A",location:"N-1-3",system:"ELECTRIC",util:""},
+  {name:"OUTDOOR DOOR OPENING BUTTON",code:"5123805A",location:"Q-3-2",system:"DOORS",util:""},
+  {name:"BATTERY CHARGER MODULE",code:"10051406",location:"HM-9R",system:"ELECTRIC",util:"ABB Battery Charger"},
+  {name:"ASFA 110 V RELAY",code:"10038529",location:"M-3-3",system:"MOTOR",util:"Asfa"},
+  {name:"WC DOOR HANDLE",code:"10044051",location:"Q-1-2",system:"WC",util:""},
+  {name:"Hvac",code:"5115926A",location:"",system:"HVAC",util:""},
+  {name:"HVAC gauge",code:"10064385",location:"Q-4-4",system:"HVAC",util:""},
+  {name:"ROOM CONDENSER MOTOR",code:"10046477",location:"G-1-0",system:"HVAC",util:""},
+  {name:"RETENTION VALVE WATER",code:"10003966",location:"D-1-2",system:"Water",util:""},
+  {name:"FILTER TYPE Y WATER",code:"610282",location:"Q-1-1",system:"Water",util:""},
+  {name:"CDU",code:"5127404A",location:"F-2-1",system:"ELECTRIC",util:""},
+  {name:"MOTOR ROOM MACHINE FAN",code:"5125886A",location:"HM-3",system:"MOTOR",util:"Air Ventilacion sala de maquinas"},
+  {name:"EAA DRAIN ELBOW for HVAC",code:"10049619",location:"M-3-4",system:"EAA",util:"Desague HVAC"},
+  {name:"Standard PAPER GUIDE",code:"10049419",location:"D-1-2",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"EXTERNAL DOOR MECHANISM SH-815",code:"5130920A",location:"HM-1R",system:"DOORS",util:""},
+  {name:"BRAKE FLUID",code:"10046364",location:"HM",system:"Brake",util:"Bogis"},
+  {name:"WC Complete Seta bowl",code:"5141038A",location:"HM-1R",system:"WC",util:""},
+  {name:"Cabin HVAC",code:"5116169A",location:"HM-3R",system:"HVAC",util:"PHS Cabin"},
+  {name:"GPS ANTENNA",code:"10041230",location:"D-3-3",system:"ELECTRIC",util:""},
+  {name:"PREF ARMCHAIR KEYBOARD",code:"5125248A",location:"Q-5-3",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"INDV MONITOR PREF VOD Seat monitor",code:"5125245A",location:"S-2-2",system:"ELECTRIC",util:"Monitors Group"},
+  {name:"SHOWER-BIDET",code:"5125880A",location:"A-2-3",system:"WC",util:""},
+  {name:"AIR PANEL",code:"5125890A",location:"S-2-2",system:"ELECTRIC",util:""},
+  {name:"LLAVIN KEY for Train Doors",code:"10014266",location:"D-4-2",system:"DOORS",util:"Key for train"},
+  {name:"PAU",code:"5125220A",location:"Q-3-4",system:"ELECTRIC",util:""},
+  {name:"ETHERNET GREEN CABLE M12-RJ45",code:"10044024",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"TRACTION-BRAKE MANIPULATOR",code:"5130468A",location:"W-2-3",system:"MOTOR",util:"Manipulador de traccion"},
+  {name:"COMPRESSOR OIL",code:"10014695",location:"HM-10",system:"MOTOR",util:"PHS Main Compressor"},
+  {name:"CONVERTER CAR LIGHTS 110 35W",code:"5043034A",location:"F-2-1",system:"ELECTRIC",util:"Converter Motriz"},
+  {name:"Circuit Breaker MCB 25KV",code:"5129151A",location:"HM-4",system:"PANTOGRAPH / HIGH TENS.",util:"HIGH VOLTAGE MOTRIZ"},
+  {name:"Terminal panel electric air compressor",code:"10075845",location:"",system:"ELECTRIC",util:"Aire"},
+  {name:"Instant relay 4 switched 110VDC",code:"10013410",location:"F-4-1",system:"ELECTRIC",util:"Aire"},
+  {name:"Three-pole contactor 48-130 VDC",code:"10032535",location:"M-2-4",system:"ELECTRIC",util:"Aire"},
+  {name:"K1 AIR COMPRESSOR CONTACTOR",code:"10040254",location:"M-4-2",system:"ELECTRIC",util:"Aire"},
+  {name:"COMPLETE PANTOGRAPH",code:"5126061A",location:"HM-8R",system:"PANTOGRAPH / HIGH TENS.",util:"Electrical"},
+  {name:"MICRO DOOR WC",code:"10033111",location:"M-3-3",system:"WC",util:""},
+  {name:"Fuse 2A",code:"10051521",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"5A fuse",code:"10051522",location:"D-2-3",system:"ELECTRIC",util:""},
+  {name:"10A fuse",code:"10051523",location:"D-1-3",system:"ELECTRIC",util:""},
+  {name:"CEILING LIGHT LED CARS",code:"5132262A",location:"Q-8-2",system:"ILLUMINATION",util:"Roof Ceiling LED lights"},
+  {name:"GENSET BATTERY",code:"10060918",location:"H-0",system:"GENSET",util:"Gen-Set Generador"},
+  {name:"K174 WIPER RELAY",code:"10015045",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"Cellar evaporator fan",code:"10073349",location:"R-3-2",system:"Refrigerators",util:"Cold Storage"},
+  {name:"Cabinet Fridge",code:"5133843A",location:"N-1-2",system:"Refrigerators",util:"Fridge Cabin"},
+  {name:"LEVEL SENSORS",code:"10027594",location:"D-3-2",system:"ELECTRIC",util:"Water System tank level"},
+  {name:"EGRU",code:"5124861A",location:"W-3-2",system:"ELECTRIC",util:""},
+  {name:"EXTINGUISHER",code:"10048634",location:"HM-4",system:"TOOLS",util:""},
+  {name:"ADD PANTOGRAPH VALVE",code:"10061507",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"MENBRANA PANTOGRAPH",code:"10071835",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Microwave",code:"10066387",location:"G-0-2",system:"Interiors",util:"Car 05"},
+  {name:"OVEN",code:"5142530A",location:"",system:"Interiors",util:"Car05"},
+  {name:"WC BUTTON",code:"10033105",location:"Q-1-3",system:"WC",util:""},
+  {name:"BATTERY CHARGER FAN",code:"10051430",location:"S-1-2",system:"ELECTRIC",util:"ABB Battery Charger"},
+  {name:"EAA CAR CONTROL MODULE",code:"5115928A",location:"W-3-4",system:"EAA",util:"Control Card for HVAC"},
+  {name:"EAA CAR CARD for HVAC Cars",code:"10046527",location:"F-1-2",system:"EAA",util:"Controal Card for HVAC"},
+  {name:"EAA COMPLETE",code:"5115926",location:"",system:"EAA",util:""},
+  {name:"DVR recorder Hard Disk",code:"5126589A",location:"S-1-1",system:"Security cameras",util:""},
+  {name:"MOBILE VOICE RECORDER",code:"5146913A",location:"S-2-2",system:"Security cameras",util:""},
+  {name:"CIP",code:"5125221A",location:"Q-4-4",system:"ELECTRIC",util:""},
+  {name:"EAA MOTOR MODE SELECTOR",code:"10043962",location:"R-4-3",system:"EAA",util:""},
+  {name:"EAA MOTOR EMERGENCY SELECTOR",code:"10043963",location:"R-4-3",system:"EAA",util:""},
+  {name:"WC ELECTRONICS",code:"5125879A",location:"W-1-2",system:"WC",util:"Electronic Card for WC"},
+  {name:"EMERGENCY LIGHT for seat Economy",code:"5140306B",location:"C-2-3",system:"ILLUMINATION",util:"Luces de emergencias"},
+  {name:"WC Hand Dryer",code:"10041088",location:"D",system:"WC",util:""},
+  {name:"EMERGENCY PUSH BUTTON WC Inside",code:"10032837",location:"Q-4-2",system:"WC",util:""},
+  {name:"BCU1",code:"5131882A",location:"W-1-3",system:"ELECTRIC",util:""},
+  {name:"BCU2",code:"5131882B",location:"F-2-3",system:"ELECTRIC",util:""},
+  {name:"Exterior door motor",code:"10048432",location:"Q-7-2",system:"DOORS",util:"Exterior doors"},
+  {name:"Interior Door Motor",code:"10065043",location:"",system:"DOORS",util:"Inner door"},
+  {name:"INTERNAL DOOR MOTOR",code:"10051627",location:"Q-4-3",system:"DOORS",util:""},
+  {name:"SH750 DOOR MECHANISM ASSEMBLY INT",code:"5130922A",location:"H-1",system:"DOORS",util:""},
+  {name:"GENERATOR EXTINGUISHER",code:"5133188A",location:"M-4-2",system:"GENSET",util:""},
+  {name:"Capacitor CONVERTER CONDENSER",code:"10063713",location:"",system:"ELECTRIC",util:"Capacitor"},
+  {name:"CONDENSER CONVERTER Old",code:"10040558",location:"H-0",system:"ELECTRIC",util:"Capacitor"},
+  {name:"EXTERIOR INFORMATION DISPLAY PANEL",code:"5148672A",location:"W-1-3",system:"ELECTRIC",util:""},
+  {name:"WC TAP for Sink",code:"10033109",location:"F-3-2",system:"WC",util:""},
+  {name:"LED STRIPE BOX",code:"5134532A",location:"F-2-1",system:"ILLUMINATION",util:""},
+  {name:"PANTOGRAPH Neumatic PANEL",code:"5131338A",location:"H-1",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"CONDENSING UNIT",code:"10049407",location:"HM-1R",system:"HVAC",util:""},
+  {name:"EAA PACKING UNIT",code:"5115739A",location:"",system:"EAA",util:""},
+  {name:"CU-AG rod",code:"130008",location:"",system:"ELECTRIC",util:""},
+  {name:"Swivel Pivot Bolt",code:"5216893A",location:"",system:"INTERIOR / MECHANICAL",util:"Mecanico Enganche morro"},
+  {name:"Coolant converters",code:"10048496",location:"",system:"ELECTRIC",util:"Convertidores"},
+  {name:"Antena GSMR-GPS ERTMS/ETCS",code:"10031619",location:"",system:"ELECTRIC",util:""},
+  {name:"Fire Extinguisher",code:"10048634",location:"",system:"TOOLS",util:""},
+  {name:"Boiler Heater",code:"10066388",location:"",system:"ELECTRIC",util:""},
+  {name:"SCHUKO TYPE SOCKET XS2",code:"10037956",location:"",system:"ELECTRIC",util:""},
+  {name:"Battery Charger Pump",code:"10051431",location:"",system:"ELECTRIC",util:"ABB Battery Charger"},
+  {name:"Vagner Fire Protection",code:"5125832A",location:"",system:"ELECTRIC",util:"Wanger Fire Protection"},
+  {name:"Roof Switch for roof line 25KV",code:"5129152A",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Non return valve for water system",code:"10003966",location:"Q-9-3",system:"Water",util:""},
+  {name:"TEMPERATURE SENSOR for Boji",code:"10055578",location:"",system:"ELECTRIC",util:"PHs Temp Sensor"},
+  {name:"RELAY TERMINAL GREEN Relay",code:"10018362",location:"",system:"ELECTRIC",util:""},
+  {name:"SOLENOID VALVE-COIL 24V",code:"10046479",location:"",system:"ELECTRIC",util:""},
+  {name:"CLEANER LUBRICANT for Electrical CRC",code:"121518",location:"",system:"TOOLS",util:"Cleaner for Elect. Contact"},
+  {name:"TEMPERATURE SENSOR for Bogie GearBox",code:"10055582",location:"",system:"ELECTRIC",util:"PHs Gearbox"},
+  {name:"DIRECT ROOF LIGHTING RIGHT/LEFT",code:"5136223A",location:"",system:"ILLUMINATION",util:"CARS DIRECT ROOF LIGHTING"},
+  {name:"Power Head External Door Rubber SEALING PROFILE",code:"10025861",location:"",system:"DOORS",util:""},
+  {name:"INSULATOR for Pantograph",code:"10061509",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"TEMPERATURE SENSOR STATOR",code:"10055585",location:"",system:"ELECTRIC",util:""},
+  {name:"Aux Convertor Power Module",code:"5114676A",location:"",system:"ELECTRIC",util:"PHs Convertor BT / Alstom"},
+  {name:"EVC ERTMS/ETCS",code:"5131642A",location:"",system:"ELECTRIC",util:"PHs ERTMS"},
+  {name:"Fire Detector for Cars",code:"5125831A",location:"",system:"ELECTRIC",util:"CARS SMOKE DETECTOR"},
+  {name:"CYCLONIC EXTRACTORS Fan",code:"5125885A",location:"",system:"MOTOR",util:""},
+  {name:"Main Transformer Oil",code:"10050329",location:"",system:"MOTOR",util:"PHs"},
+  {name:"CCTV HMI",code:"5126592A",location:"",system:"Security cameras",util:""},
+  {name:"External Light front Head Top",code:"5134955A",location:"",system:"ILLUMINATION",util:"PHS Light"},
+  {name:"Air dryer for Compressor",code:"Z5125715A",location:"",system:"MOTOR",util:"PHS Main Compressor"},
+  {name:"IMPULSE SOLENOID VALVE air dryer",code:"10056396",location:"",system:"ELECTRIC",util:""},
+  {name:"Battery new for trains",code:"10040502",location:"",system:"ELECTRIC",util:"Cars Batteries"},
+  {name:"PMR DCU Door control Unit",code:"10050797",location:"",system:"DOORS",util:"PMR door"},
+  {name:"Out door Transformer 25KV PT",code:"5130603A",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Electric Contact Grease",code:"10016943",location:"",system:"TOOLS",util:""},
+  {name:"WIFI ACCESS POINT Indra",code:"5131397A",location:"",system:"ELECTRIC",util:"Car 04"},
+  {name:"Under sink door",code:"5110176A",location:"",system:"WC",util:""},
+  {name:"FRESH AIR MOTOR-FAN ASSEMBLY for HVAC",code:"10054650",location:"",system:"HVAC",util:""},
+  {name:"Spring for Brake Pad",code:"10075660",location:"",system:"Brake",util:""},
+  {name:"FRONT Sunshade for PH",code:"5238917A",location:"",system:"Interiors",util:"Sun shade PHs"},
+  {name:"ELECTRIC MOTOR for sunshade for PH",code:"10082309",location:"",system:"ELECTRIC",util:"Estor PHs"},
+  {name:"Welding rod",code:"135008",location:"",system:"TOOLS",util:""},
+  {name:"Train batteries water",code:"133401",location:"",system:"Water",util:""},
+  {name:"Generator Coolant",code:"10060392",location:"",system:"GENSET",util:""},
+  {name:"COMPRESSOR WASHER after Oil fill",code:"10033358",location:"",system:"MOTOR",util:""},
+  {name:"INTERNAL DOOR DCU",code:"10050797",location:"",system:"DOORS",util:""},
+  {name:"CCTV Camera",code:"5126591A",location:"",system:"Security cameras",util:""},
+  {name:"Push Button for Interior Door",code:"5154087A",location:"",system:"DOORS",util:""},
+  {name:"Emergency Brake Valve Push button Brake",code:"5121989A",location:"",system:"Brake",util:"PHs Brake System"},
+  {name:"Fuse 1250",code:"10050080",location:"",system:"ELECTRIC",util:"Cars Main Fuses"},
+  {name:"DMI",code:"5131753A",location:"",system:"ELECTRIC",util:"PHs"},
+  {name:"PMR TOILET LOCK SLAVE ASSEMBLY",code:"5150025A",location:"",system:"WC",util:"PMR door"},
+  {name:"Loctite alfi quick",code:"126492",location:"",system:"TOOLS",util:""},
+  {name:"OIL CONTROL UNIT",code:"10060613",location:"",system:"MOTOR",util:""},
+  {name:"MAIN ELEMENT",code:"10081317",location:"",system:"MOTOR",util:""},
+  {name:"O-RING",code:"10081279",location:"",system:"MOTOR",util:""},
+  {name:"OIL FILT CARTRIDGE",code:"10048647",location:"",system:"MOTOR",util:""},
+  {name:"THERMOSTAT",code:"10081278",location:"",system:"ELECTRIC",util:""},
+  {name:"Coffee machine filter support",code:"10065350",location:"",system:"Interiors",util:"Car 05 Cafeteria"},
+  {name:"180 OPENING HINGE Cold storage and cellar",code:"5078889A",location:"",system:"Refrigerators",util:""},
+  {name:"Arm Rest for Business",code:"5140011A",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"External Door Limit switch S10",code:"10048451",location:"",system:"DOORS",util:""},
+  {name:"HOURS COUNTER for compressor",code:"10071226",location:"",system:"MOTOR",util:""},
+  {name:"Speed sensor Rudals IMPULSES SENSOR",code:"5143528A",location:"",system:"MOTOR",util:""},
+  {name:"TORSION SPRING for coupler front locking door",code:"10083699",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"RADIATOR of ABB Battery Charger",code:"10051432",location:"",system:"ELECTRIC",util:"ABB Battery charger"},
+  {name:"Non return valve for water system White",code:"10027449",location:"",system:"Water",util:""},
+  {name:"Talgo rodal logo",code:"5006877A",location:"",system:"INTERIOR / MECHANICAL",util:"Rodadura"},
+];
+
+let parts = JSON.parse(localStorage.getItem('fichas_parts') || 'null') ||
+  INITIAL_DATA.map((p, i) => ({...p, id: Date.now() + i}));
+
+let currentRole = null; // 'admin' or 'viewer'
+let activeFilter = 'Todos';
+let searchQuery = '';
+let editingId = null;
+let deletingId = null;
+let expandedId = null;
+
+function save() { localStorage.setItem('fichas_parts', JSON.stringify(parts)); }
+
+// AUTH
+function tryLogin() {
+  const pwd = document.getElementById('pwdInput').value;
+  const err = document.getElementById('loginError');
+  if (pwd === ADMIN_PASSWORD) {
+    currentRole = 'admin';
+    enterApp();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdInput').focus();
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+function enterViewer() {
+  currentRole = 'viewer';
+  enterApp();
+}
+
+function enterApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  const badge = document.getElementById('roleBadge');
+  if (currentRole === 'admin') {
+    badge.textContent = '🔑 مسؤول';
+    badge.className = 'role-badge role-admin';
+    badge.title = 'اضغط للخروج';
+    document.getElementById('addBtn').style.display = 'flex';
+    document.getElementById('fabBtn').style.display = 'flex';
+    document.getElementById('viewerHint').style.display = 'none';
+  } else {
+    badge.textContent = '👁️ مشاهد';
+    badge.className = 'role-badge role-viewer';
+    badge.title = 'اضغط للخروج';
+    document.getElementById('addBtn').style.display = 'none';
+    document.getElementById('fabBtn').style.display = 'none';
+    document.getElementById('viewerHint').style.display = 'flex';
+  }
+  renderFilters();
+  renderCards();
+}
+
+function logout() {
+  currentRole = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('pwdInput').value = '';
+}
+
+// HELPERS
+function getCatInfo(system) { return SYSTEM_ICONS[system] || {icon:'🔧',cls:'cat-default'}; }
+
+function filterParts() {
+  return parts.filter(p => {
+    const q = searchQuery;
+    const matchSearch = !q ||
+      p.name.toLowerCase().includes(q) ||
+      (p.code||'').toLowerCase().includes(q) ||
+      (p.location||'').toLowerCase().includes(q) ||
+      (p.system||'').toLowerCase().includes(q) ||
+      (p.util||'').toLowerCase().includes(q);
+    const matchFilter = activeFilter === 'Todos' || p.system === activeFilter;
+    return matchSearch && matchFilter;
+  });
+}
+
+function highlight(text) {
+  if (!searchQuery || !text) return text || '';
+  const re = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return String(text).replace(re, '<mark style="background:#3b82f620;color:var(--accent2);border-radius:3px">$1</mark>');
+}
+
+function renderFilters() {
+  const bar = document.getElementById('filtersBar');
+  const allSystems = ['Todos', ...new Set(parts.map(p => p.system).filter(Boolean))];
+  const cats = CATEGORIES.filter(c => allSystems.includes(c));
+  bar.innerHTML = cats.map(c => `
+    <button type="button" class="filter-btn ${activeFilter===c?'active':''}" data-category="${c}">
+      ${c==='Todos'?'Todos':c}
+    </button>`).join('');
+
+  bar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => setFilter(btn.dataset.category));
+  });
+
+  requestAnimationFrame(() => {
+    const active = bar.querySelector('.filter-btn.active');
+    active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  });
+}
+
+function renderCards() {
+  const filtered = filterParts();
+  const container = document.getElementById('cardsContainer');
+  document.getElementById('statsBar').innerHTML =
+    `<span>${filtered.length}</span> result${filtered.length!==1?'s':''} of <span>${parts.length}</span> parts`;
+
+  if (!filtered.length) {
+    container.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">No results found</div></div>`;
+    return;
+  }
+
+  const isAdmin = currentRole === 'admin';
+
+  container.innerHTML = filtered.map(p => {
+    const cat = getCatInfo(p.system);
+    const exp = expandedId === p.id;
+    return `
+    <div class="card ${exp?'expanded':''}" id="card-${p.id}" onclick="toggleCard(${p.id},event)">
+      <div class="card-header">
+        <div class="card-icon ${cat.cls}">${cat.icon}</div>
+        <div class="card-info">
+          <div class="card-name">${highlight(p.name)}</div>
+          ${p.code?`<div class="card-code"># ${highlight(p.code)}</div>`:''}
+        </div>
+        ${isAdmin ? `<div class="card-actions">
+          <button class="card-btn btn-edit" onclick="editPart(${p.id},event)">✏️</button>
+          <button class="card-btn btn-delete" onclick="askDelete(${p.id},event)">🗑</button>
+        </div>` : ''}
+      </div>
+      <div class="card-tags">
+        ${p.system?`<span class="tag">${p.system}</span>`:''}
+        ${p.location?`<span class="tag location">📍 ${highlight(p.location)}</span>`:''}
+        ${p.util?`<span class="tag system">${p.util}</span>`:''}
+      </div>
+      ${p.translation ? `
+      <div class="card-arabic">
+        <div class="arabic-row"><span class="arabic-label">الترجمة:</span><span class="arabic-value">${p.translation}</span></div>
+        ${p.phonetic?`<div class="arabic-row"><span class="arabic-label">النطق:</span><span class="arabic-phonetic">${p.phonetic}</span></div>`:''}
+      </div>` : (isAdmin ? `<button class="translate-btn" onclick="openModal(parts.find(x=>x.id===${p.id}),true);event.stopPropagation()">🌐 ترجمة للعربي</button>` : '')}
+      <div class="card-details">
+        ${p.code?`<div class="detail-row"><span class="detail-label">Code:</span><span class="detail-value" style="font-family:monospace;color:var(--accent2)">${p.code}</span></div>`:''}
+        ${p.location?`<div class="detail-row"><span class="detail-label">Location:</span><span class="detail-value">${p.location}</span></div>`:''}
+        ${p.system?`<div class="detail-row"><span class="detail-label">Subsystem:</span><span class="detail-value">${p.system}</span></div>`:''}
+        ${p.util?`<div class="detail-row"><span class="detail-label">Util:</span><span class="detail-value">${p.util}</span></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(id, e) {
+  if (e.target.closest('.card-btn,.translate-btn')) return;
+  expandedId = expandedId === id ? null : id;
+  renderCards();
+}
+
+function setFilter(cat) { activeFilter = cat; renderFilters(); renderCards(); }
+
+function handleSearch(val) {
+  searchQuery = val.toLowerCase().trim();
+  document.getElementById('clearBtn').classList.toggle('show', val.length > 0);
+  renderCards();
+}
+
+function clearSearch() {
+  const inp = document.getElementById('searchInput');
+  inp.value = ''; handleSearch(''); inp.focus();
+}
+
+// MODAL (admin only)
+function openModal(part, scrollToTrans) {
+  if (currentRole !== 'admin') return;
+  editingId = part ? part.id : null;
+  document.getElementById('modalTitle').textContent = part ? '✏️ Edit Part' : '➕ New Part';
+  document.getElementById('fName').value = part ? part.name : '';
+  document.getElementById('fCode').value = part ? (part.code||'') : '';
+  document.getElementById('fLocation').value = part ? (part.location||'') : '';
+  document.getElementById('fSystem').value = part ? (part.system||'') : '';
+  document.getElementById('fUtil').value = part ? (part.util||'') : '';
+  document.getElementById('fTrans').value = part ? (part.translation||'') : '';
+  document.getElementById('fPhonetic').value = part ? (part.phonetic||'') : '';
+  document.getElementById('modalOverlay').classList.add('show');
+  setTimeout(() => (scrollToTrans ? document.getElementById('fTrans') : document.getElementById('fName')).focus(), 300);
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); editingId = null; }
+function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+function savePart() {
+  if (currentRole !== 'admin') return;
+  const name = document.getElementById('fName').value.trim();
+  if (!name) { document.getElementById('fName').style.borderColor = 'var(--red)'; return; }
+  document.getElementById('fName').style.borderColor = '';
+  const data = {
+    name,
+    code: document.getElementById('fCode').value.trim(),
+    location: document.getElementById('fLocation').value.trim(),
+    system: document.getElementById('fSystem').value,
+    util: document.getElementById('fUtil').value.trim(),
+    translation: document.getElementById('fTrans').value.trim(),
+    phonetic: document.getElementById('fPhonetic').value.trim(),
+  };
+  if (editingId) {
+    parts = parts.map(p => p.id === editingId ? {...p,...data} : p);
+    showToast('✅ Part updated');
+  } else {
+    parts.unshift({...data, id: Date.now()});
+    showToast('✅ Part added');
+  }
+  save(); closeModal(); renderFilters(); renderCards();
+}
+
+function editPart(id, e) {
+  e.stopPropagation();
+  if (currentRole !== 'admin') return;
+  const part = parts.find(p => p.id === id);
+  if (part) openModal(part);
+}
+
+function askDelete(id, e) {
+  e.stopPropagation();
+  if (currentRole !== 'admin') return;
+  deletingId = id;
+  const part = parts.find(p => p.id === id);
+  document.getElementById('confirmText').textContent = `"${part?.name}" will be permanently deleted.`;
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+
+function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('show'); deletingId = null; }
+
+function confirmDelete() {
+  if (!deletingId || currentRole !== 'admin') return;
+  parts = parts.filter(p => p.id !== deletingId);
+  save(); closeConfirm();
+  if (expandedId === deletingId) expandedId = null;
+  renderFilters(); renderCards();
+  showToast('🗑️ Part deleted');
+  deletingId = null;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeConfirm(); } });
+document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key==='Enter') tryLogin(); });
+</script>
+</body>
+</html>
