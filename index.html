@@ -614,7 +614,25 @@
   <div class="image-preview-frame"><img id="previewImage" src="" alt="Preview"></div>
 </div>
 
+<!-- Firebase: يخزن البيانات على السحابة بحيث تظهر التعديلات لكل الزوار فوراً -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
+// ====== إعدادات Firebase ======
+// عدّل القيم التالية بإعدادات مشروعك (خذها من Firebase Console > Project settings > Your apps)
+const firebaseConfig = {
+  apiKey: "ضع_apiKey_هنا",
+  authDomain: "ضع_authDomain_هنا",
+  databaseURL: "ضع_databaseURL_هنا", // مهم جداً: من Realtime Database
+  projectId: "ضع_projectId_هنا",
+  storageBucket: "ضع_storageBucket_هنا",
+  messagingSenderId: "ضع_messagingSenderId_هنا",
+  appId: "ضع_appId_هنا"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+// ====== نهاية إعدادات Firebase ======
+
 const ADMIN_PASSWORD = 'ahmad@054';
 const CATEGORIES = ['Todos','PANTOGRAPH / HIGH TENS.','ELECTRIC','DOORS','HVAC','EAA','MOTOR','ILLUMINATION','Brake','WC'];
 const SYSTEM_ICONS = {
@@ -865,12 +883,10 @@ const INITIAL_DATA = [
   {name:"Talgo rodal logo",code:"5006877A",location:"",system:"INTERIOR / MECHANICAL",util:"Rodadura"},
 ];
 
-let parts = JSON.parse(localStorage.getItem('fichas_parts') || 'null') ||
-  INITIAL_DATA.map((p, i) => ({...p, id: Date.now() + i}));
-
-let deletedParts = JSON.parse(localStorage.getItem('fichas_deleted') || 'null') || [];
-let requests = JSON.parse(localStorage.getItem('fichas_requests') || 'null') || [];
-let tempAccess = JSON.parse(localStorage.getItem('fichas_temp_access') || 'null'); // { expiresAt: number } | null
+let parts = [];
+let deletedParts = [];
+let requests = [];
+let tempAccess = null; // { expiresAt: number } | null
 
 let currentRole = null; // 'admin' or 'viewer'
 let activeFilter = 'Todos';
@@ -886,16 +902,52 @@ let imageDataUrl = '';
 let requestImageDataUrl = '';
 
 function save() {
-  try {
-    localStorage.setItem('fichas_parts', JSON.stringify(parts));
-  } catch (e) {
-    showToast('⚠️ مساحة التخزين ممتلئة، لم تُحفظ آخر الصور');
-  }
+  db.ref('parts').set(parts).catch(() => {
+    showToast('⚠️ تعذّر الحفظ على السيرفر، تحقق من الاتصال');
+  });
 }
-function saveDeleted() { localStorage.setItem('fichas_deleted', JSON.stringify(deletedParts)); }
-function saveRequests() { localStorage.setItem('fichas_requests', JSON.stringify(requests)); }
-function saveTempAccess() { localStorage.setItem('fichas_temp_access', JSON.stringify(tempAccess)); }
+function saveDeleted() { db.ref('deleted').set(deletedParts); }
+function saveRequests() { db.ref('requests').set(requests); }
+function saveTempAccess() { db.ref('tempAccess').set(tempAccess); }
 function isTempAccessActive() { return !!(tempAccess && tempAccess.expiresAt > Date.now()); }
+
+// ====== مزامنة لحظية مع Firebase: أي تعديل من أي شخص يظهر عند الجميع فوراً ======
+function initFirebaseSync() {
+  db.ref('parts').on('value', snap => {
+    const val = snap.val();
+    if (val === null) {
+      // أول تشغيل للموقع: نزرع البيانات الأولية مرة واحدة على السيرفر
+      db.ref('parts').set(INITIAL_DATA.map((p, i) => ({...p, id: Date.now() + i})));
+      return;
+    }
+    parts = Array.isArray(val) ? val : Object.values(val);
+    if (currentRole) { renderFilters(); renderCards(); }
+  });
+
+  db.ref('deleted').on('value', snap => {
+    const val = snap.val();
+    deletedParts = Array.isArray(val) ? val : (val ? Object.values(val) : []);
+    if (currentRole === 'admin') {
+      if (typeof renderTrashList === 'function') renderTrashList();
+      updateTrashBadge();
+    }
+  });
+
+  db.ref('requests').on('value', snap => {
+    const val = snap.val();
+    requests = Array.isArray(val) ? val : (val ? Object.values(val) : []);
+    updateRequestsBadge();
+    if (currentRole === 'admin' && document.getElementById('requestsOverlay')?.classList.contains('show')) {
+      renderRequestsList();
+    }
+  });
+
+  db.ref('tempAccess').on('value', snap => {
+    tempAccess = snap.val();
+    if (typeof updateTempAccessUI === 'function') updateTempAccessUI();
+  });
+}
+initFirebaseSync();
 
 // AUTH
 function tryLogin() {
