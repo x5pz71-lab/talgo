@@ -4,23 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Buscador de Fichas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   :root {
-    --bg: #0b1020; --surface: #121a2d; --card: #161f33; --card-hover: #1d2946;
-    --border: #273552; --accent: #5b8cff; --accent2: #86b9ff; --text: #edf2ff;
-    --text-muted: #8ea3c7; --text-dim: #64748b; --tag-bg: #233458; --tag-text: #9bc7ff;
-    --green: #10b981; --red: #ef4444; --yellow: #f59e0b; --radius: 16px; --radius-sm: 10px;
+    --bg: #0a0c12; --surface: #12151e; --card: #161a25; --card-hover: #1b2130;
+    --border: #262b3a; --accent: #c9a961; --accent2: #e3c988; --text: #f0f1f5;
+    --text-muted: #8b93a3; --text-dim: #575e6d; --tag-bg: #1d2230; --tag-text: #d9bd82;
+    --green: #4ade80; --red: #f87171; --yellow: #c9a961; --radius: 18px; --radius-sm: 12px;
   }
   body {
     background:
-      radial-gradient(circle at top right, rgba(91,140,255,0.35), transparent 25%),
-      radial-gradient(circle at bottom left, rgba(16,185,129,0.18), transparent 20%),
+      radial-gradient(circle at top right, rgba(201,169,97,0.10), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(201,169,97,0.05), transparent 22%),
       var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     min-height: 100vh;
     padding-bottom: 80px;
+    letter-spacing: 0.1px;
   }
 
   /* LOGIN SCREEN */
@@ -29,35 +33,41 @@
     display: flex; align-items: center; justify-content: center; padding: 24px;
   }
   .login-box {
-    background: linear-gradient(180deg, #182343, #151d30);
-    border: 1.5px solid var(--border);
-    border-radius: 24px;
-    padding: 32px 24px;
+    background: linear-gradient(165deg, #171b26, #10131b);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 40px 28px 32px;
     width: 100%; max-width: 360px;
     text-align: center;
-    box-shadow: 0 18px 50px rgba(16,24,40,0.45);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    position: relative;
   }
-  .login-logo { font-size: 48px; margin-bottom: 12px; }
-  .login-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-  .login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
-  .login-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-align: right; margin-bottom: 6px; }
+  .login-box::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 46px; height: 3px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    border-radius: 2px;
+  }
+  .login-logo { font-size: 40px; margin-bottom: 14px; filter: grayscale(0.3) sepia(0.3); }
+  .login-title { font-size: 21px; font-weight: 700; color: #fff; margin-bottom: 5px; letter-spacing: 0.2px; }
+  .login-sub { font-size: 12.5px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.3px; }
+  .login-label { display: block; font-size: 11px; font-weight: 600; color: var(--accent2); text-align: right; margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.6px; }
   .login-input {
-    width: 100%; background: var(--surface); border: 1.5px solid var(--border);
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
     border-radius: 10px; padding: 13px 14px; font-size: 15px; color: var(--text);
-    outline: none; margin-bottom: 14px; text-align: left; direction: ltr;
-    transition: border-color 0.2s;
+    outline: none; margin-bottom: 16px; text-align: left; direction: ltr;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .login-input:focus { border-color: var(--accent); }
+  .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,169,97,0.12); }
   .login-btn {
-    width: 100%; background: var(--accent); border: none; color: #fff;
-    border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700;
-    cursor: pointer; margin-bottom: 10px; transition: background 0.2s;
+    width: 100%; background: linear-gradient(135deg, #d4b876, #b8923f); border: none; color: #171310;
+    border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700;
+    cursor: pointer; margin-bottom: 12px; transition: filter 0.2s; letter-spacing: 0.2px;
   }
-  .login-btn:active { background: #2563eb; }
+  .login-btn:active { filter: brightness(0.92); }
   .login-error { color: var(--red); font-size: 13px; margin-top: 4px; display: none; }
   .login-viewer-btn {
-    background: none; border: 1.5px dashed var(--border); color: var(--text-muted);
-    border-radius: 12px; padding: 11px; font-size: 14px; cursor: pointer; width: 100%;
+    background: none; border: 1px dashed var(--border); color: var(--text-muted);
+    border-radius: 12px; padding: 12px; font-size: 13.5px; cursor: pointer; width: 100%;
     transition: all 0.2s;
   }
   .login-viewer-btn:hover { border-color: var(--accent); color: var(--accent2); }
@@ -68,39 +78,120 @@
     padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
     cursor: pointer;
   }
-  .role-admin { background: #1e3a5f; color: var(--accent2); border: 1px solid var(--accent); }
-  .role-viewer { background: #1a2e1a; color: var(--green); border: 1px solid var(--green); }
+  .role-admin { background: #2a2313; color: var(--accent2); border: 1px solid var(--accent); }
+  .role-viewer { background: #16261c; color: var(--green); border: 1px solid var(--green); }
 
   /* HEADER */
   .header {
-    background: linear-gradient(135deg, #10182b 0%, #1d2c4d 48%, #162444 100%);
-    padding: 20px 16px 16px;
+    background: linear-gradient(135deg, #0d0f16 0%, #171b26 50%, #12151f 100%);
+    padding: 10px 14px 8px;
     position: sticky; top: 0; z-index: 100;
-    border-bottom: 1px solid rgba(91,140,255,0.18);
-    box-shadow: 0 12px 30px rgba(15,23,42,0.2);
+    border-bottom: 1px solid rgba(201,169,97,0.16);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
   }
-  .header-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .header-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
   .logo-icon {
-    width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), #7c3aed);
-    border-radius: 10px; display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
+    width: 28px; height: 28px; background: linear-gradient(135deg, #d4b876, #a67c3d);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
   }
-  .header-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: #fff; }
-  .header-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .header-title { font-size: 15px; font-weight: 700; letter-spacing: 0.1px; color: #fff; }
+  .header-sub { font-size: 10px; color: var(--text-muted); margin-top: 0px; }
   .header-right { margin-right: auto; display: flex; align-items: center; gap: 8px; }
   .add-btn {
-    background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm);
-    padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; gap: 5px; transition: background 0.2s; white-space: nowrap;
+    background: linear-gradient(135deg, #d4b876, #b8923f); color: #171310; border: none; border-radius: var(--radius-sm);
+    padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; gap: 5px; transition: filter 0.2s; white-space: nowrap;
   }
-  .add-btn:active { background: #2563eb; }
+  .add-btn:active { filter: brightness(0.9); }
+  .trash-btn {
+    position: relative; background: var(--surface); color: var(--text-muted); border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 6px 8px; font-size: 13px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+  .trash-btn:hover { border-color: var(--red); color: var(--red); }
+  .requests-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .temp-access-btn { position: relative; }
+  .temp-access-btn.is-active { border-color: var(--accent); color: var(--accent2); background: linear-gradient(135deg, #2a2313, #1d1a0e); }
+  .temp-access-dot {
+    position: absolute; top: -4px; left: -4px; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); border: 2px solid var(--bg); display: none;
+    animation: pulseDot 1.6s ease-in-out infinite;
+  }
+  .temp-access-btn.is-active .temp-access-dot { display: block; }
+  @keyframes pulseDot { 0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); } 50% { box-shadow: 0 0 0 4px rgba(74,222,128,0); } }
+  .temp-hint {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #2a2313; border: 1px solid var(--accent); color: var(--accent2);
+    padding: 9px 18px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    z-index: 50; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .temp-modal-status {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .temp-modal-status.on { border-color: var(--accent); background: #1d1a0e; }
+  .temp-status-text { font-size: 13px; color: var(--text-muted); }
+  .temp-status-text b { color: var(--accent2); font-family: 'Courier New', monospace; }
+  .temp-end-btn { background: #2d1515; color: var(--red); border: none; border-radius: 8px; padding: 7px 12px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .temp-duration-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .temp-duration-btn {
+    background: var(--surface); border: 1.5px solid var(--border); color: var(--text);
+    border-radius: 10px; padding: 12px 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .temp-duration-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .temp-custom-row { display: flex; gap: 8px; align-items: center; }
+  .trash-badge {
+    position: absolute; top: -6px; left: -6px; background: var(--red); color: #fff;
+    font-size: 10px; font-weight: 700; min-width: 17px; height: 17px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1;
+  }
+  .requests-badge { background: var(--accent); }
+  .request-part-btn {
+    background: linear-gradient(135deg, #232838, #1a1e2a); color: var(--accent2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: all 0.2s;
+  }
+  .request-part-btn:hover { border-color: var(--accent); }
+  .request-fab { background: linear-gradient(135deg, #4ade80, #22a35e); box-shadow: 0 8px 26px rgba(34,163,94,0.35); }
+  .request-item {
+    background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 12px; margin-bottom: 8px;
+  }
+  .request-item-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .request-item-meta { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+  .request-item-note { font-size: 12px; color: var(--text-muted); background: #0f1a2e; border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.5; }
+  .request-item-btns { display: flex; gap: 8px; }
+  .request-accept-btn, .request-reject-btn {
+    flex: 1; border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .request-accept-btn { background: #153022; color: var(--green); }
+  .request-reject-btn { background: #2d1515; color: var(--red); }
+  .requests-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+  .trash-item {
+    display: flex; align-items: center; gap: 10px; background: var(--surface);
+    border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;
+  }
+  .trash-item-info { flex: 1; min-width: 0; }
+  .trash-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .trash-item-meta { font-size: 11px; color: var(--text-dim); }
+  .trash-item-btns { display: flex; gap: 6px; flex-shrink: 0; }
+  .trash-restore-btn, .trash-purge-btn {
+    border: none; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 4px; white-space: nowrap;
+  }
+  .trash-restore-btn { background: #153022; color: var(--green); }
+  .trash-purge-btn { background: #2d1515; color: var(--red); }
+  .trash-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
 
   /* SEARCH */
-  .search-wrap { position: relative; margin-bottom: 10px; }
-  .search-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 15px; }
+  .search-wrap { position: relative; margin-bottom: 6px; }
+  .search-icon { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
   .search-input {
     width: 100%; background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 12px 40px 12px 12px; font-size: 15px; color: var(--text);
+    border-radius: 10px; padding: 9px 40px 9px 12px; font-size: 14px; color: var(--text);
     outline: none; transition: border-color 0.2s; direction: ltr; text-align: left;
   }
   .search-input::placeholder { color: var(--text-dim); }
@@ -112,16 +203,16 @@
     display: none; align-items: center; justify-content: center;
   }
   .search-clear.show { display: flex; }
-  .stats-bar { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  .stats-bar { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
   .stats-bar span { color: var(--accent2); font-weight: 600; }
 
   /* FILTERS */
   .filters {
     display: flex; gap: 7px; overflow-x: auto; padding: 10px 16px; scrollbar-width: none;
-    position: sticky; top: 118px; z-index: 55;
-    background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.72));
+    position: sticky; top: 104px; z-index: 55;
+    background: linear-gradient(180deg, rgba(10,12,18,0.94), rgba(10,12,18,0.74));
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(91,140,255,0.10);
+    border-bottom: 1px solid rgba(201,169,97,0.08);
     scroll-snap-type: x proximity;
   }
   .filters::-webkit-scrollbar { display: none; }
@@ -132,35 +223,40 @@
     scroll-snap-align: start;
   }
   .filter-btn:hover {
-    border-color: #5b8cff; color: var(--accent2); transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(59,130,246,0.14);
+    border-color: var(--accent); color: var(--accent2); transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(201,169,97,0.12);
   }
   .filter-btn:active { transform: scale(0.98); }
   .filter-btn.active {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border-color: #5b8cff;
-    color: #fff;
-    box-shadow: 0 8px 20px rgba(59,130,246,0.32);
+    background: linear-gradient(135deg, #d4b876, #a67c3d);
+    border-color: #d4b876;
+    color: #171310;
+    box-shadow: 0 8px 20px rgba(201,169,97,0.28);
   }
 
   /* CARDS */
   .cards-container { padding: 12px 16px 0; }
   .card {
-    background: linear-gradient(180deg, #18213a, #151d2f);
-    border: 1.5px solid var(--border);
+    background: linear-gradient(180deg, #171b26, #12151e);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 14px;
+    padding: 15px;
     margin-bottom: 10px;
     position: relative;
     transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.18s ease;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(15,23,42,0.12);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22);
   }
-  .card:hover { transform: translateY(-2px); border-color: #314b77; box-shadow: 0 10px 30px rgba(15,23,42,0.2); }
+  .card:hover { transform: translateY(-2px); border-color: #4a3f28; box-shadow: 0 12px 32px rgba(0,0,0,0.32); }
   .card:active { transform: scale(0.99); }
-  .card.expanded { border-color: var(--accent); }
-  .card-header { display: flex; align-items: flex-start; gap: 10px; }
+  .card.expanded { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(201,169,97,0.25), 0 12px 32px rgba(0,0,0,0.32); }
+  .card-header { display: flex; align-items: flex-start; gap: 10px; direction: ltr; }
   .card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .card-image { width: 54px; height: 54px; border-radius: 14px; overflow: hidden; background: #0f1a2a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: zoom-in; }
+  .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-side { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .card-thumb { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; background: #0f1a2a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: zoom-in; border: 1.5px solid var(--border); }
+  .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .card-info { flex: 1; min-width: 0; }
   .card-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
   .card-code { font-size: 12px; color: var(--accent2); font-weight: 700; font-family: 'Courier New', monospace; }
@@ -170,14 +266,18 @@
   .btn-edit { background: var(--tag-bg); color: var(--accent2); }
   .btn-delete { background: #2d1515; color: var(--red); }
   .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-  .tag { background: linear-gradient(135deg, #263a59, #1d2d4a); color: var(--tag-text); border-radius: 7px; padding: 3px 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
-  .tag.location { background: linear-gradient(135deg, #153022, #0f2418); color: var(--green); }
-  .tag.system { background: linear-gradient(135deg, #3a2510, #2a1c0c); color: var(--yellow); }
-  .card-arabic { margin-top: 8px; padding: 8px 10px; background: #0f1a2e; border-radius: 8px; border-right: 3px solid var(--accent); direction: rtl; text-align: right; }
+  .tag { background: linear-gradient(135deg, #232838, #1a1e2a); color: var(--tag-text); border-radius: 7px; padding: 3px 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .tag.location { background: linear-gradient(135deg, #16261c, #101c15); color: var(--green); }
+  .tag.system { background: linear-gradient(135deg, #2e2612, #211b0d); color: var(--yellow); }
+  .tag.viewer-added {
+    background: transparent; border: 1px dashed var(--accent); color: var(--accent2);
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .card-arabic { margin-top: 8px; padding: 8px 10px; background: #0f1219; border-radius: 8px; border-right: 3px solid var(--accent); direction: rtl; text-align: right; }
   .arabic-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 3px; flex-direction: row-reverse; }
   .arabic-label { font-size: 10px; color: var(--text-muted); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
-  .arabic-value { font-size: 13px; color: #93c5fd; font-weight: 600; line-height: 1.4; }
-  .arabic-phonetic { font-size: 12px; color: #6b7a9b; }
+  .arabic-value { font-size: 13px; color: var(--accent2); font-weight: 600; line-height: 1.4; font-family: 'Tajawal', sans-serif; }
+  .arabic-phonetic { font-size: 12px; color: var(--text-dim); font-family: 'Tajawal', sans-serif; }
   .translate-btn {
     margin-top: 8px; background: none; border: 1px dashed var(--border); color: var(--text-muted);
     border-radius: 7px; padding: 5px 10px; font-size: 11px; cursor: pointer; width: 100%;
@@ -209,9 +309,9 @@
   .form-input::placeholder { color: var(--text-dim); }
   .form-select option { background: var(--surface); }
   .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
-  .btn-cancel { flex: 1; background: var(--surface); border: 1.5px solid var(--border); color: var(--text-muted); border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .btn-save { flex: 2; background: var(--accent); border: none; color: #fff; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; }
-  .btn-save:active { background: #2563eb; }
+  .btn-cancel { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .btn-save { flex: 2; background: linear-gradient(135deg, #d4b876, #b8923f); border: none; color: #171310; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .btn-save:active { filter: brightness(0.9); }
 
   /* CONFIRM */
   .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -226,29 +326,33 @@
   .btn-yes { flex: 1; background: var(--red); border: none; color: #fff; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
 
   /* TOAST */
-  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1e3a5f; border: 1px solid var(--accent); color: var(--accent2); padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 400; white-space: nowrap; }
+  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: #201a0d; border: 1px solid var(--accent); color: var(--accent2); padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 400; white-space: nowrap; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .image-preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .image-preview-overlay.show { display: flex; }
+  .image-preview-frame { max-width: calc(100vw - 40px); max-height: calc(100vh - 40px); border-radius: 18px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); }
+  .image-preview-frame img { display: block; width: 100%; height: auto; max-height: calc(100vh - 40px); }
 
-  .fab { position: fixed; bottom: 20px; left: 16px; width: 54px; height: 54px; background: linear-gradient(135deg, #6aa8ff, #7c5cff); border-radius: 50%; border: none; color: #fff; font-size: 24px; cursor: pointer; box-shadow: 0 8px 26px rgba(91,140,255,0.45); display: flex; align-items: center; justify-content: center; z-index: 50; transition: transform 0.2s; }
+  .fab { position: fixed; bottom: 20px; left: 16px; width: 54px; height: 54px; background: linear-gradient(135deg, #d4b876, #a67c3d); border-radius: 50%; border: none; color: #171310; font-size: 24px; cursor: pointer; box-shadow: 0 8px 26px rgba(201,169,97,0.4); display: flex; align-items: center; justify-content: center; z-index: 50; transition: transform 0.2s; }
   .fab:active { transform: scale(0.92); }
 
   /* Category colors */
-  .cat-pantograph { background: #1a1f3a; color: #818cf8; }
-  .cat-electric { background: #1a2e1a; color: #34d399; }
-  .cat-doors { background: #2a1810; color: #fb923c; }
-  .cat-hvac { background: #0f2a2a; color: #22d3ee; }
-  .cat-eaa { background: #2a1020; color: #f472b6; }
-  .cat-motor { background: #1a1a10; color: #fbbf24; }
-  .cat-illumination { background: #1f1a10; color: #fcd34d; }
-  .cat-brake { background: #1f1010; color: #f87171; }
-  .cat-wc { background: #101f1f; color: #5eead4; }
-  .cat-interior { background: #1a1030; color: #c084fc; }
-  .cat-default { background: #1a1f2e; color: #94a3b8; }
+  .cat-pantograph { background: #1c1f2e; color: #a5abd6; }
+  .cat-electric { background: #16261c; color: #6fcf97; }
+  .cat-doors { background: #2a2015; color: #dba36c; }
+  .cat-hvac { background: #12262a; color: #6fc2cf; }
+  .cat-eaa { background: #271620; color: #d68ab0; }
+  .cat-motor { background: #26200f; color: var(--accent2); }
+  .cat-illumination { background: #29220f; color: #e0c589; }
+  .cat-brake { background: #291515; color: #e08080; }
+  .cat-wc { background: #10221f; color: #7fd4c4; }
+  .cat-interior { background: #1e1826; color: #b498d1; }
+  .cat-default { background: #1a1e28; color: #97a0ad; }
 
   /* Viewer locked overlay hint */
   .viewer-hint {
     position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: #1a2e1a; border: 1px solid var(--green); color: var(--green);
+    background: #16261c; border: 1px solid var(--green); color: var(--green);
     padding: 9px 18px; border-radius: 20px; font-size: 12px; font-weight: 600;
     z-index: 50; display: flex; align-items: center; gap: 6px;
   }
@@ -281,7 +385,17 @@
       </div>
       <div class="header-right">
         <span class="role-badge" id="roleBadge" onclick="logout()"></span>
+        <button class="trash-btn requests-btn" id="requestsBtn" onclick="openRequests()" style="display:none">
+          📥<span class="trash-badge requests-badge" id="requestsBadge" style="display:none">0</span>
+        </button>
+        <button class="trash-btn temp-access-btn" id="tempAccessBtn" onclick="openTempAccessModal()" style="display:none" title="وضع الإضافة المؤقت للمشاهدين">
+          ⏱️<span class="temp-access-dot"></span>
+        </button>
+        <button class="trash-btn" id="trashBtn" onclick="openTrash()" style="display:none">
+          🗑️<span class="trash-badge" id="trashBadge" style="display:none">0</span>
+        </button>
         <button class="add-btn" id="addBtn" onclick="openModal()" style="display:none">+ Add</button>
+        <button class="request-part-btn" id="requestPartBtn" onclick="openRequestModal()" style="display:none">📩 طلب قطعة</button>
       </div>
     </div>
     <div class="search-wrap">
@@ -297,9 +411,13 @@
 
   <!-- FAB only for admin -->
   <button class="fab" id="fabBtn" onclick="openModal()" style="display:none">+</button>
+  <!-- FAB for viewer to request a part -->
+  <button class="fab request-fab" id="requestFabBtn" onclick="openRequestModal()" style="display:none">📩</button>
 
   <!-- Viewer hint -->
   <div class="viewer-hint" id="viewerHint" style="display:none">👁️ وضع المشاهدة — لا يمكن التعديل</div>
+  <!-- Temp access hint for viewer -->
+  <div class="temp-hint" id="tempHint" style="display:none">🔓 وضع الإضافة مفعّل — متبقي <span id="tempHintTime">--:--</span></div>
 </div>
 
 <!-- MODAL -->
@@ -322,6 +440,11 @@
       </select>
     </div>
     <div class="form-group"><label class="form-label">Utilization / Description</label><input type="text" class="form-input" id="fUtil" placeholder="e.g. High voltage, Cafeteria..."></div>
+    <div class="form-group"><label class="form-label">Image URL</label><input type="text" class="form-input" id="fImage" placeholder="e.g. https://example.com/image.jpg"></div>
+    <div class="form-group" style="display:flex;gap:10px;align-items:center;">
+      <button type="button" class="btn-cancel" style="flex:1;min-width:0;" onclick="removeImage()">إزالة الصورة</button>
+      <input type="file" class="form-input" id="fImageFile" accept="image/*" onchange="loadImageFile(event)" style="flex:2;min-width:0;" />
+    </div>
     <div class="form-group"><label class="form-label">الترجمة العربية</label><input type="text" class="form-input" id="fTrans" placeholder="مثال: بيك أب DBZ" dir="rtl" style="text-align:right"></div>
     <div class="form-group"><label class="form-label">النطق</label><input type="text" class="form-input" id="fPhonetic" placeholder="مثال: دي بي زد" dir="rtl" style="text-align:right"></div>
     <div class="modal-footer">
@@ -344,7 +467,152 @@
   </div>
 </div>
 
+<!-- TRASH LIST MODAL -->
+<div class="modal-overlay" id="trashOverlay" onclick="handleTrashOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🗑️ سلة المحذوفات</div>
+    <div id="trashList"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" style="flex:1" onclick="closeTrash()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM PERMANENT DELETE -->
+<div class="confirm-overlay" id="purgeConfirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">⚠️</div>
+    <div class="confirm-title">حذف نهائي؟</div>
+    <div class="confirm-text" id="purgeConfirmText">لا يمكن التراجع عن هذا الإجراء.</div>
+    <div class="confirm-btns">
+      <button class="btn-no" onclick="closePurgeConfirm()">إلغاء</button>
+      <button class="btn-yes" onclick="confirmPurge()">حذف نهائي</button>
+    </div>
+  </div>
+</div>
+
+<!-- REQUEST A PART (viewer) -->
+<div class="modal-overlay" id="requestModalOverlay" onclick="handleRequestOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📩 طلب إضافة قطعة</div>
+    <div class="form-group"><label class="form-label">اسم القطعة *</label><input type="text" class="form-input" id="rName" placeholder="مثال: PANTOGRAPH Sliding Strip"></div>
+    <div class="form-group"><label class="form-label">رقم القطعة (إن وجد)</label><input type="text" class="form-input" id="rCode" placeholder="مثال: 10060691" dir="rtl" style="text-align:right"></div>
+    <div class="form-group"><label class="form-label">الموقع (إن وجد)</label><input type="text" class="form-input" id="rLocation" placeholder="مثال: HM-5R"></div>
+    <div class="form-group">
+      <label class="form-label">النظام الفرعي</label>
+      <select class="form-select" id="rSystem">
+        <option value="">-- اختر --</option>
+        <option>PANTOGRAPH / HIGH TENS.</option><option>ELECTRIC</option><option>DOORS</option>
+        <option>HVAC</option><option>EAA</option><option>MOTOR</option><option>ILLUMINATION</option>
+        <option>Brake</option><option>WC</option><option>INTERIOR / MECHANICAL</option>
+        <option>GENSET</option><option>TOOLS</option><option>Water</option>
+        <option>Interiors</option><option>Refrigerators</option><option>Security cameras</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">ملاحظة / سبب الطلب</label><input type="text" class="form-input" id="rNote" placeholder="مثال: القطعة مطلوبة لصيانة..." dir="rtl" style="text-align:right"></div>
+    <div class="form-group">
+      <label class="form-label">إرفاق صورة (اختياري)</label>
+      <input type="file" class="form-input" id="rImageFile" accept="image/*" onchange="loadRequestImageFile(event)">
+      <div id="rImagePreviewWrap" style="display:none;margin-top:10px;align-items:center;gap:10px;">
+        <img id="rImagePreview" src="" alt="معاينة" style="width:54px;height:54px;border-radius:12px;object-fit:cover;border:1.5px solid var(--border);">
+        <button type="button" class="btn-cancel" style="flex:1;min-width:0;" onclick="removeRequestImage()">إزالة الصورة</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeRequestModal()">إلغاء</button>
+      <button class="btn-save" onclick="submitRequest()">📨 إرسال الطلب</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEMP ACCESS MODAL (admin only) -->
+<div class="modal-overlay" id="tempAccessModalOverlay" onclick="handleTempAccessOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⏱️ وضع الإضافة المؤقت للمشاهدين</div>
+    <div style="font-size:12.5px;color:var(--text-muted);margin-top:-10px;margin-bottom:16px;line-height:1.6;">
+      خلال الفترة المحددة، يقدر أي مشاهد يضيف قطعة مباشرة بدون ما ترسل كطلب للموافقة.
+    </div>
+
+    <div class="temp-modal-status" id="tempModalStatus">
+      <span class="temp-status-text" id="tempModalStatusText">🔒 الوضع غير مفعّل حالياً</span>
+      <button class="temp-end-btn" id="tempEndBtn" style="display:none" onclick="endTempAccessNow()">إنهاء الآن</button>
+    </div>
+
+    <div class="form-label" style="margin-bottom:10px;">اختر مدة التفعيل</div>
+    <div class="temp-duration-grid">
+      <button class="temp-duration-btn" onclick="activateTempAccess(15)">15 دقيقة</button>
+      <button class="temp-duration-btn" onclick="activateTempAccess(30)">30 دقيقة</button>
+      <button class="temp-duration-btn" onclick="activateTempAccess(60)">ساعة واحدة</button>
+      <button class="temp-duration-btn" onclick="activateTempAccess(180)">3 ساعات</button>
+      <button class="temp-duration-btn" onclick="activateTempAccess(480)">8 ساعات</button>
+      <button class="temp-duration-btn" onclick="activateTempAccess(1440)">يوم كامل</button>
+    </div>
+
+    <div class="form-label">أو مدة مخصصة (بالدقائق)</div>
+    <div class="temp-custom-row form-group">
+      <input type="number" class="form-input" id="tempCustomMinutes" placeholder="مثال: 45" min="1" style="flex:1;">
+      <button class="btn-save" style="flex:1;" onclick="activateTempAccessCustom()">✅ تفعيل</button>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeTempAccessModal()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- REQUESTS LIST (admin) -->
+<div class="modal-overlay" id="requestsOverlay" onclick="handleRequestsOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📥 طلبات إضافة قطع</div>
+    <div id="requestsList"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" style="flex:1" onclick="closeRequests()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- REQUEST DETAIL (full view, admin) -->
+<div class="modal-overlay" id="requestDetailOverlay" onclick="handleRequestDetailOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📩 تفاصيل الطلب</div>
+    <div id="rdImageWrap" style="display:none;margin-bottom:16px;">
+      <img id="rdImage" src="" alt="صورة الطلب" style="width:100%;max-height:260px;object-fit:cover;border-radius:14px;border:1.5px solid var(--border);cursor:zoom-in;" onclick="openImagePreview(document.getElementById('rdImage').src)">
+    </div>
+    <div id="rdName" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:10px;"></div>
+    <div id="rdMetaRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
+    <div id="rdNoteWrap" style="display:none;">
+      <label class="form-label">ملاحظة / سبب الطلب</label>
+      <div id="rdNote" class="request-item-note" style="margin-top:6px;"></div>
+    </div>
+    <div class="modal-footer" style="margin-top:18px;">
+      <button class="request-reject-btn" style="flex:1;padding:12px;" onclick="askRejectRequest(rdCurrentId);closeRequestDetail()">❌ رفض</button>
+      <button class="request-accept-btn" style="flex:1;padding:12px;" onclick="acceptRequest(rdCurrentId)">➕ إضافة</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM REJECT REQUEST -->
+<div class="confirm-overlay" id="rejectConfirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">❌</div>
+    <div class="confirm-title">رفض الطلب؟</div>
+    <div class="confirm-text" id="rejectConfirmText">سيتم حذف هذا الطلب.</div>
+    <div class="confirm-btns">
+      <button class="btn-no" onclick="closeRejectConfirm()">إلغاء</button>
+      <button class="btn-yes" onclick="confirmRejectRequest()">رفض الطلب</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+<div class="image-preview-overlay" id="imagePreviewOverlay" onclick="closeImagePreview(event)">
+  <div class="image-preview-frame"><img id="previewImage" src="" alt="Preview"></div>
+</div>
 
 <script>
 const ADMIN_PASSWORD = 'ahmad@054';
@@ -600,14 +868,28 @@ const INITIAL_DATA = [
 let parts = JSON.parse(localStorage.getItem('fichas_parts') || 'null') ||
   INITIAL_DATA.map((p, i) => ({...p, id: Date.now() + i}));
 
+let deletedParts = JSON.parse(localStorage.getItem('fichas_deleted') || 'null') || [];
+let requests = JSON.parse(localStorage.getItem('fichas_requests') || 'null') || [];
+let tempAccess = JSON.parse(localStorage.getItem('fichas_temp_access') || 'null'); // { expiresAt: number } | null
+
 let currentRole = null; // 'admin' or 'viewer'
 let activeFilter = 'Todos';
 let searchQuery = '';
 let editingId = null;
 let deletingId = null;
+let purgingId = null;
+let rejectingId = null;
+let rdCurrentId = null;
+let fulfillingRequestId = null;
 let expandedId = null;
+let imageDataUrl = '';
+let requestImageDataUrl = '';
 
 function save() { localStorage.setItem('fichas_parts', JSON.stringify(parts)); }
+function saveDeleted() { localStorage.setItem('fichas_deleted', JSON.stringify(deletedParts)); }
+function saveRequests() { localStorage.setItem('fichas_requests', JSON.stringify(requests)); }
+function saveTempAccess() { localStorage.setItem('fichas_temp_access', JSON.stringify(tempAccess)); }
+function isTempAccessActive() { return !!(tempAccess && tempAccess.expiresAt > Date.now()); }
 
 // AUTH
 function tryLogin() {
@@ -639,17 +921,25 @@ function enterApp() {
     badge.title = 'اضغط للخروج';
     document.getElementById('addBtn').style.display = 'flex';
     document.getElementById('fabBtn').style.display = 'flex';
+    document.getElementById('trashBtn').style.display = 'flex';
+    document.getElementById('requestsBtn').style.display = 'flex';
+    document.getElementById('tempAccessBtn').style.display = 'flex';
+    document.getElementById('requestPartBtn').style.display = 'none';
+    document.getElementById('requestFabBtn').style.display = 'none';
     document.getElementById('viewerHint').style.display = 'none';
   } else {
     badge.textContent = '👁️ مشاهد';
     badge.className = 'role-badge role-viewer';
     badge.title = 'اضغط للخروج';
-    document.getElementById('addBtn').style.display = 'none';
-    document.getElementById('fabBtn').style.display = 'none';
-    document.getElementById('viewerHint').style.display = 'flex';
+    document.getElementById('trashBtn').style.display = 'none';
+    document.getElementById('requestsBtn').style.display = 'none';
+    document.getElementById('tempAccessBtn').style.display = 'none';
   }
   renderFilters();
   renderCards();
+  updateTrashBadge();
+  updateRequestsBadge();
+  updateTempAccessUI();
 }
 
 function logout() {
@@ -657,6 +947,93 @@ function logout() {
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('pwdInput').value = '';
+}
+
+// TEMP ACCESS (viewers can add parts directly for a limited time set by admin)
+function formatCountdown(ms) {
+  if (ms <= 0) return '00:00';
+  const totalSec = Math.floor(ms / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  const pad = n => String(n).padStart(2, '0');
+  return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+}
+
+function updateTempAccessUI() {
+  const active = isTempAccessActive();
+  if (currentRole === 'viewer') {
+    document.getElementById('addBtn').style.display = active ? 'flex' : 'none';
+    document.getElementById('fabBtn').style.display = active ? 'flex' : 'none';
+    document.getElementById('requestPartBtn').style.display = active ? 'none' : 'flex';
+    document.getElementById('requestFabBtn').style.display = active ? 'none' : 'flex';
+    document.getElementById('viewerHint').style.display = active ? 'none' : 'flex';
+    document.getElementById('tempHint').style.display = active ? 'flex' : 'none';
+    if (active) document.getElementById('tempHintTime').textContent = formatCountdown(tempAccess.expiresAt - Date.now());
+  } else if (currentRole === 'admin') {
+    document.getElementById('tempAccessBtn').classList.toggle('is-active', active);
+  }
+  const statusBox = document.getElementById('tempModalStatus');
+  if (statusBox) {
+    const statusText = document.getElementById('tempModalStatusText');
+    const endBtn = document.getElementById('tempEndBtn');
+    if (active) {
+      statusBox.classList.add('on');
+      statusText.innerHTML = `🔓 مفعّل — متبقي <b>${formatCountdown(tempAccess.expiresAt - Date.now())}</b>`;
+      endBtn.style.display = 'inline-block';
+    } else {
+      statusBox.classList.remove('on');
+      statusText.textContent = '🔒 الوضع غير مفعّل حالياً';
+      endBtn.style.display = 'none';
+    }
+  }
+}
+
+let _tempWasActive = isTempAccessActive();
+setInterval(() => {
+  const active = isTempAccessActive();
+  if (_tempWasActive && !active && currentRole === 'viewer') showToast('⏱️ انتهت فترة الإضافة المؤقتة');
+  _tempWasActive = active;
+  if (currentRole) updateTempAccessUI();
+}, 1000);
+
+function openTempAccessModal() {
+  if (currentRole !== 'admin') return;
+  document.getElementById('tempCustomMinutes').value = '';
+  document.getElementById('tempCustomMinutes').style.borderColor = '';
+  updateTempAccessUI();
+  document.getElementById('tempAccessModalOverlay').classList.add('show');
+}
+function closeTempAccessModal() { document.getElementById('tempAccessModalOverlay').classList.remove('show'); }
+function handleTempAccessOverlayClick(e) { if (e.target === document.getElementById('tempAccessModalOverlay')) closeTempAccessModal(); }
+
+function activateTempAccess(minutes) {
+  if (currentRole !== 'admin' || !minutes || minutes <= 0) return;
+  tempAccess = { expiresAt: Date.now() + minutes * 60000 };
+  saveTempAccess();
+  _tempWasActive = true;
+  updateTempAccessUI();
+  const label = minutes % 60 === 0 && minutes >= 60 ? `${minutes / 60} ساعة` : (minutes >= 1440 ? 'يوم كامل' : `${minutes} دقيقة`);
+  showToast(`🔓 تم تفعيل الإضافة المؤقتة لمدة ${label}`);
+  closeTempAccessModal();
+}
+
+function activateTempAccessCustom() {
+  if (currentRole !== 'admin') return;
+  const input = document.getElementById('tempCustomMinutes');
+  const val = parseInt(input.value, 10);
+  if (!val || val <= 0) { input.style.borderColor = 'var(--red)'; return; }
+  input.style.borderColor = '';
+  activateTempAccess(val);
+}
+
+function endTempAccessNow() {
+  if (currentRole !== 'admin') return;
+  tempAccess = null;
+  saveTempAccess();
+  _tempWasActive = false;
+  updateTempAccessUI();
+  showToast('🔒 تم إنهاء وضع الإضافة المؤقت');
 }
 
 // HELPERS
@@ -725,15 +1102,19 @@ function renderCards() {
           <div class="card-name">${highlight(p.name)}</div>
           ${p.code?`<div class="card-code"># ${highlight(p.code)}</div>`:''}
         </div>
-        ${isAdmin ? `<div class="card-actions">
-          <button class="card-btn btn-edit" onclick="editPart(${p.id},event)">✏️</button>
-          <button class="card-btn btn-delete" onclick="askDelete(${p.id},event)">🗑</button>
-        </div>` : ''}
+        <div class="card-side">
+          ${p.image ? `<div class="card-thumb" onclick="openImagePreview('${p.image.replace(/'/g, "\\'")}');event.stopPropagation()"><img src="${p.image}" alt="${p.name}"></div>` : ''}
+          ${isAdmin ? `<div class="card-actions">
+            <button class="card-btn btn-edit" onclick="editPart(${p.id},event)">✏️</button>
+            <button class="card-btn btn-delete" onclick="askDelete(${p.id},event)">🗑</button>
+          </div>` : ''}
+        </div>
       </div>
       <div class="card-tags">
         ${p.system?`<span class="tag">${p.system}</span>`:''}
         ${p.location?`<span class="tag location">📍 ${highlight(p.location)}</span>`:''}
         ${p.util?`<span class="tag system">${p.util}</span>`:''}
+        ${p.addedByViewer?`<span class="tag viewer-added" ${isAdmin?`onclick="verifyPart(${p.id},event)" title="اضغط للتأكيد كمسؤول" style="cursor:pointer"`:''}>🆕 أضافها مشاهد${isAdmin?' · تأكيد ✓':''}</span>`:''}
       </div>
       ${p.translation ? `
       <div class="card-arabic">
@@ -769,9 +1150,50 @@ function clearSearch() {
   inp.value = ''; handleSearch(''); inp.focus();
 }
 
-// MODAL (admin only)
+function loadImageFile(event) {
+  const file = event.target.files[0];
+  if (!file) {
+    imageDataUrl = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    imageDataUrl = reader.result;
+    document.getElementById('fImage').value = imageDataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeImage() {
+  imageDataUrl = '';
+  document.getElementById('fImage').value = '';
+  document.getElementById('fImageFile').value = '';
+}
+
+function loadRequestImageFile(event) {
+  const file = event.target.files[0];
+  if (!file) { removeRequestImage(); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    requestImageDataUrl = reader.result;
+    document.getElementById('rImagePreview').src = requestImageDataUrl;
+    document.getElementById('rImagePreviewWrap').style.display = 'flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeRequestImage() {
+  requestImageDataUrl = '';
+  document.getElementById('rImageFile').value = '';
+  document.getElementById('rImagePreview').src = '';
+  document.getElementById('rImagePreviewWrap').style.display = 'none';
+}
+
+// MODAL (admin, or viewer during temp access — add only, never edit)
 function openModal(part, scrollToTrans) {
-  if (currentRole !== 'admin') return;
+  const canAdd = currentRole === 'admin' || (currentRole === 'viewer' && isTempAccessActive());
+  if (!canAdd) return;
+  if (part && currentRole !== 'admin') return;
   editingId = part ? part.id : null;
   document.getElementById('modalTitle').textContent = part ? '✏️ Edit Part' : '➕ New Part';
   document.getElementById('fName').value = part ? part.name : '';
@@ -781,15 +1203,19 @@ function openModal(part, scrollToTrans) {
   document.getElementById('fUtil').value = part ? (part.util||'') : '';
   document.getElementById('fTrans').value = part ? (part.translation||'') : '';
   document.getElementById('fPhonetic').value = part ? (part.phonetic||'') : '';
+  document.getElementById('fImage').value = part ? (part.image||'') : '';
+  document.getElementById('fImageFile').value = '';
+  imageDataUrl = part ? (part.image||'') : '';
   document.getElementById('modalOverlay').classList.add('show');
   setTimeout(() => (scrollToTrans ? document.getElementById('fTrans') : document.getElementById('fName')).focus(), 300);
 }
 
-function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); editingId = null; }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); editingId = null; fulfillingRequestId = null; }
 function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
 
 function savePart() {
-  if (currentRole !== 'admin') return;
+  const canAdd = currentRole === 'admin' || (currentRole === 'viewer' && isTempAccessActive() && !editingId);
+  if (!canAdd) return;
   const name = document.getElementById('fName').value.trim();
   if (!name) { document.getElementById('fName').style.borderColor = 'var(--red)'; return; }
   document.getElementById('fName').style.borderColor = '';
@@ -801,14 +1227,23 @@ function savePart() {
     util: document.getElementById('fUtil').value.trim(),
     translation: document.getElementById('fTrans').value.trim(),
     phonetic: document.getElementById('fPhonetic').value.trim(),
+    image: document.getElementById('fImage').value.trim(),
   };
   if (editingId) {
     parts = parts.map(p => p.id === editingId ? {...p,...data} : p);
     showToast('✅ Part updated');
   } else {
+    if (currentRole === 'viewer') data.addedByViewer = true;
     parts.unshift({...data, id: Date.now()});
-    showToast('✅ Part added');
+    if (fulfillingRequestId) {
+      requests = requests.filter(r => r.id !== fulfillingRequestId);
+      saveRequests(); updateRequestsBadge();
+      showToast('✅ تمت إضافة القطعة وإغلاق الطلب');
+    } else {
+      showToast('✅ Part added');
+    }
   }
+  fulfillingRequestId = null;
   save(); closeModal(); renderFilters(); renderCards();
 }
 
@@ -819,12 +1254,20 @@ function editPart(id, e) {
   if (part) openModal(part);
 }
 
+function verifyPart(id, e) {
+  e.stopPropagation();
+  if (currentRole !== 'admin') return;
+  parts = parts.map(p => p.id === id ? {...p, addedByViewer: false} : p);
+  save(); renderCards();
+  showToast('✅ تم تأكيد القطعة من المسؤول');
+}
+
 function askDelete(id, e) {
   e.stopPropagation();
   if (currentRole !== 'admin') return;
   deletingId = id;
   const part = parts.find(p => p.id === id);
-  document.getElementById('confirmText').textContent = `"${part?.name}" will be permanently deleted.`;
+  document.getElementById('confirmText').textContent = `سيتم نقل "${part?.name}" إلى سلة المحذوفات.`;
   document.getElementById('confirmOverlay').classList.add('show');
 }
 
@@ -832,12 +1275,238 @@ function closeConfirm() { document.getElementById('confirmOverlay').classList.re
 
 function confirmDelete() {
   if (!deletingId || currentRole !== 'admin') return;
-  parts = parts.filter(p => p.id !== deletingId);
+  const part = parts.find(p => p.id === deletingId);
+  if (part) {
+    parts = parts.filter(p => p.id !== deletingId);
+    deletedParts.unshift({...part, deletedAt: Date.now()});
+    saveDeleted();
+  }
   save(); closeConfirm();
   if (expandedId === deletingId) expandedId = null;
-  renderFilters(); renderCards();
-  showToast('🗑️ Part deleted');
+  renderFilters(); renderCards(); updateTrashBadge();
+  showToast('🗑️ تم نقل القطعة لسلة المحذوفات');
   deletingId = null;
+}
+
+// TRASH BIN
+function updateTrashBadge() {
+  const badge = document.getElementById('trashBadge');
+  if (!badge) return;
+  if (deletedParts.length > 0) {
+    badge.textContent = deletedParts.length > 99 ? '99+' : deletedParts.length;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function openTrash() {
+  if (currentRole !== 'admin') return;
+  renderTrashList();
+  document.getElementById('trashOverlay').classList.add('show');
+}
+
+function closeTrash() { document.getElementById('trashOverlay').classList.remove('show'); }
+
+function handleTrashOverlayClick(e) { if (e.target === document.getElementById('trashOverlay')) closeTrash(); }
+
+function renderTrashList() {
+  const list = document.getElementById('trashList');
+  if (!deletedParts.length) {
+    list.innerHTML = `<div class="trash-empty">🗑️ سلة المحذوفات فارغة</div>`;
+    return;
+  }
+  list.innerHTML = deletedParts.map(p => {
+    const d = new Date(p.deletedAt);
+    const dateStr = d.toLocaleDateString('ar', {day:'numeric', month:'short', year:'numeric'});
+    return `
+    <div class="trash-item">
+      <div class="trash-item-info">
+        <div class="trash-item-name">${p.name}</div>
+        <div class="trash-item-meta">${p.code ? '# '+p.code+' · ' : ''}حُذفت في ${dateStr}</div>
+      </div>
+      <div class="trash-item-btns">
+        <button class="trash-restore-btn" onclick="restorePart(${p.id})">↩️ استرجاع</button>
+        <button class="trash-purge-btn" onclick="askPurge(${p.id})">🗑️ حذف نهائي</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function restorePart(id) {
+  if (currentRole !== 'admin') return;
+  const part = deletedParts.find(p => p.id === id);
+  if (!part) return;
+  const { deletedAt, ...rest } = part;
+  deletedParts = deletedParts.filter(p => p.id !== id);
+  parts.unshift(rest);
+  save(); saveDeleted();
+  renderFilters(); renderCards(); renderTrashList(); updateTrashBadge();
+  showToast('↩️ تم استرجاع القطعة');
+}
+
+function askPurge(id) {
+  purgingId = id;
+  const part = deletedParts.find(p => p.id === id);
+  document.getElementById('purgeConfirmText').textContent = `سيتم حذف "${part?.name}" نهائيًا ولا يمكن استرجاعها.`;
+  document.getElementById('purgeConfirmOverlay').classList.add('show');
+}
+
+function closePurgeConfirm() { document.getElementById('purgeConfirmOverlay').classList.remove('show'); purgingId = null; }
+
+function confirmPurge() {
+  if (!purgingId || currentRole !== 'admin') return;
+  deletedParts = deletedParts.filter(p => p.id !== purgingId);
+  saveDeleted(); closePurgeConfirm();
+  renderTrashList(); updateTrashBadge();
+  showToast('🗑️ تم الحذف النهائي');
+  purgingId = null;
+}
+
+// PART REQUESTS (viewer submits, admin reviews)
+function openRequestModal() {
+  if (currentRole !== 'viewer') return;
+  document.getElementById('rName').value = '';
+  document.getElementById('rCode').value = '';
+  document.getElementById('rLocation').value = '';
+  document.getElementById('rSystem').value = '';
+  document.getElementById('rNote').value = '';
+  removeRequestImage();
+  document.getElementById('requestModalOverlay').classList.add('show');
+  setTimeout(() => document.getElementById('rName').focus(), 300);
+}
+
+function closeRequestModal() { document.getElementById('requestModalOverlay').classList.remove('show'); }
+function handleRequestOverlayClick(e) { if (e.target === document.getElementById('requestModalOverlay')) closeRequestModal(); }
+
+function submitRequest() {
+  if (currentRole !== 'viewer') return;
+  const name = document.getElementById('rName').value.trim();
+  if (!name) { document.getElementById('rName').style.borderColor = 'var(--red)'; return; }
+  document.getElementById('rName').style.borderColor = '';
+  requests.unshift({
+    id: Date.now(),
+    name,
+    code: document.getElementById('rCode').value.trim(),
+    location: document.getElementById('rLocation').value.trim(),
+    system: document.getElementById('rSystem').value,
+    note: document.getElementById('rNote').value.trim(),
+    image: requestImageDataUrl,
+    requestedAt: Date.now(),
+  });
+  saveRequests(); closeRequestModal();
+  showToast('📨 تم إرسال الطلب للمسؤول');
+}
+
+function updateRequestsBadge() {
+  const badge = document.getElementById('requestsBadge');
+  if (!badge) return;
+  if (requests.length > 0) {
+    badge.textContent = requests.length > 99 ? '99+' : requests.length;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function openRequests() {
+  if (currentRole !== 'admin') return;
+  renderRequestsList();
+  document.getElementById('requestsOverlay').classList.add('show');
+}
+
+function closeRequests() { document.getElementById('requestsOverlay').classList.remove('show'); }
+function handleRequestsOverlayClick(e) { if (e.target === document.getElementById('requestsOverlay')) closeRequests(); }
+
+function renderRequestsList() {
+  const list = document.getElementById('requestsList');
+  if (!requests.length) {
+    list.innerHTML = `<div class="requests-empty">📥 لا توجد طلبات حالياً</div>`;
+    return;
+  }
+  list.innerHTML = requests.map(r => {
+    const d = new Date(r.requestedAt);
+    const dateStr = d.toLocaleDateString('ar', {day:'numeric', month:'short', year:'numeric'});
+    return `
+    <div class="request-item" onclick="viewRequestDetail(${r.id})" style="cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        ${r.image ? `<div class="card-thumb" style="width:44px;height:44px;border-radius:12px;overflow:hidden;flex-shrink:0;"><img src="${r.image}" style="width:100%;height:100%;object-fit:cover;display:block;"></div>` : ''}
+        <div style="flex:1;min-width:0;">
+          <div class="request-item-name">${r.name}</div>
+          <div class="request-item-meta">${r.code ? '# '+r.code+' · ' : ''}${r.system ? r.system+' · ' : ''}${r.location ? '📍 '+r.location+' · ' : ''}طُلبت في ${dateStr}</div>
+        </div>
+      </div>
+      ${r.note ? `<div class="request-item-note">${r.note}</div>` : ''}
+      <div class="request-item-btns">
+        <button class="request-accept-btn" onclick="event.stopPropagation();acceptRequest(${r.id})">➕ إضافة</button>
+        <button class="request-reject-btn" onclick="event.stopPropagation();askRejectRequest(${r.id})">❌ رفض</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function viewRequestDetail(id) {
+  if (currentRole !== 'admin') return;
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  rdCurrentId = id;
+  const d = new Date(r.requestedAt);
+  const dateStr = d.toLocaleDateString('ar', {day:'numeric', month:'short', year:'numeric'});
+
+  const imgWrap = document.getElementById('rdImageWrap');
+  if (r.image) { document.getElementById('rdImage').src = r.image; imgWrap.style.display = 'block'; }
+  else { imgWrap.style.display = 'none'; }
+
+  document.getElementById('rdName').textContent = r.name;
+
+  const rows = [];
+  if (r.code) rows.push(['🔢 رقم القطعة', r.code]);
+  if (r.location) rows.push(['📍 الموقع', r.location]);
+  if (r.system) rows.push(['⚙️ النظام الفرعي', r.system]);
+  rows.push(['🗓️ طُلبت في', dateStr]);
+  document.getElementById('rdMetaRows').innerHTML = rows.map(([label, val]) => `
+    <div style="display:flex;justify-content:space-between;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-size:13px;">
+      <span style="color:var(--text-muted);">${label}</span>
+      <span style="color:var(--text);font-weight:600;">${val}</span>
+    </div>`).join('');
+
+  const noteWrap = document.getElementById('rdNoteWrap');
+  if (r.note) { document.getElementById('rdNote').textContent = r.note; noteWrap.style.display = 'block'; }
+  else { noteWrap.style.display = 'none'; }
+
+  document.getElementById('requestDetailOverlay').classList.add('show');
+}
+
+function closeRequestDetail() { document.getElementById('requestDetailOverlay').classList.remove('show'); rdCurrentId = null; }
+function handleRequestDetailOverlayClick(e) { if (e.target === document.getElementById('requestDetailOverlay')) closeRequestDetail(); }
+
+function acceptRequest(id) {
+  if (currentRole !== 'admin') return;
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  closeRequests();
+  closeRequestDetail();
+  fulfillingRequestId = id;
+  openModal({ name: r.name, code: r.code, location: r.location, system: r.system, util: r.note, image: r.image });
+  editingId = null; // ensure this is treated as a new part, not an edit
+}
+
+function askRejectRequest(id) {
+  rejectingId = id;
+  const r = requests.find(x => x.id === id);
+  document.getElementById('rejectConfirmText').textContent = `سيتم حذف طلب "${r?.name}".`;
+  document.getElementById('rejectConfirmOverlay').classList.add('show');
+}
+
+function closeRejectConfirm() { document.getElementById('rejectConfirmOverlay').classList.remove('show'); rejectingId = null; }
+
+function confirmRejectRequest() {
+  if (!rejectingId || currentRole !== 'admin') return;
+  requests = requests.filter(r => r.id !== rejectingId);
+  saveRequests(); closeRejectConfirm();
+  renderRequestsList(); updateRequestsBadge();
+  showToast('❌ تم رفض الطلب');
+  rejectingId = null;
 }
 
 function showToast(msg) {
@@ -846,7 +1515,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeConfirm(); } });
+function openImagePreview(src) {
+  const preview = document.getElementById('previewImage');
+  preview.src = src;
+  document.getElementById('imagePreviewOverlay').classList.add('show');
+}
+
+function closeImagePreview(event) {
+  if (event.target.id !== 'imagePreviewOverlay') return;
+  document.getElementById('imagePreviewOverlay').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeConfirm(); closeTrash(); closePurgeConfirm(); closeRequestModal(); closeRequests(); closeRequestDetail(); closeRejectConfirm(); closeTempAccessModal(); document.getElementById('imagePreviewOverlay').classList.remove('show'); } });
 document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key==='Enter') tryLogin(); });
 </script>
 </body>
