@@ -6,7 +6,7 @@
 <title>Buscador de Fichas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   :root {
@@ -27,50 +27,42 @@
     letter-spacing: 0.1px;
   }
 
-  /* LOGIN SCREEN */
-  .login-screen {
-    position: fixed; inset: 0; background: var(--bg); z-index: 999;
-    display: flex; align-items: center; justify-content: center; padding: 24px;
-  }
-  .login-box {
-    background: linear-gradient(165deg, #171b26, #10131b);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 40px 28px 32px;
-    width: 100%; max-width: 360px;
-    text-align: center;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-    position: relative;
-  }
-  .login-box::before {
-    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 46px; height: 3px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    border-radius: 2px;
-  }
-  .login-logo { font-size: 40px; margin-bottom: 14px; filter: grayscale(0.3) sepia(0.3); }
-  .login-title { font-size: 21px; font-weight: 700; color: #fff; margin-bottom: 5px; letter-spacing: 0.2px; }
-  .login-sub { font-size: 12.5px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.3px; }
-  .login-label { display: block; font-size: 11px; font-weight: 600; color: var(--accent2); text-align: right; margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.6px; }
-  .login-input {
-    width: 100%; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 13px 14px; font-size: 15px; color: var(--text);
-    outline: none; margin-bottom: 16px; text-align: left; direction: ltr;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,169,97,0.12); }
-  .login-btn {
-    width: 100%; background: linear-gradient(135deg, #d4b876, #b8923f); border: none; color: #171310;
-    border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700;
-    cursor: pointer; margin-bottom: 12px; transition: filter 0.2s; letter-spacing: 0.2px;
-  }
-  .login-btn:active { filter: brightness(0.92); }
-  .login-error { color: var(--red); font-size: 13px; margin-top: 4px; display: none; }
-  .login-viewer-btn {
-    background: none; border: 1px dashed var(--border); color: var(--text-muted);
-    border-radius: 12px; padding: 12px; font-size: 13.5px; cursor: pointer; width: 100%;
-    transition: all 0.2s;
-  }
-  .login-viewer-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  /* LOGIN: cab window journey */
+.login-screen{position:fixed;inset:0;z-index:999;background:#07090f;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:max(8vh,40px) 24px 30px}
+.scene{position:absolute;inset:0;width:100%;height:100%}
+.cab-frame{position:absolute;inset:10px;border-radius:30px;pointer-events:none;box-shadow:0 0 0 120px #07090f,inset 0 0 90px 10px rgba(0,0,0,.62),inset 0 0 0 1.5px rgba(214,174,98,.55)}
+.glass{position:absolute;inset:10px;border-radius:30px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.11) 0,rgba(255,255,255,0) 26%,rgba(255,255,255,0) 62%,rgba(255,255,255,.05) 100%)}
+.hero-brand{position:relative;text-align:center}
+.hero-word{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(54px,17vw,104px);letter-spacing:.3em;padding-left:.3em;line-height:1;direction:ltr;color:transparent;background:linear-gradient(100deg,#fff 38%,#F4D79C 50%,#fff 62%) 120% 0/250% 100%;-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 4px 30px rgba(0,0,0,.55));animation:sheen 3.2s 1s 2 both}
+@keyframes sheen{to{background-position:-60% 0}}
+.hero-line{width:70px;height:1px;background:linear-gradient(90deg,transparent,#D6AE62,transparent);margin:16px auto 14px}
+.hero-tag{font-size:15px;font-weight:600;color:#EBDDBE}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.55);margin-top:4px;direction:ltr}
+.hero-welcome{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;color:#F6E5BC;margin-top:14px;direction:ltr;opacity:0;transform:translateY(8px);transition:opacity 1.3s,transform 1.3s}
+.hero-welcome.show{opacity:1;transform:none}
+.bottom{position:relative;display:grid;width:100%;max-width:380px}
+.bottom>*{grid-area:1/1;align-self:end}
+.start{text-align:center;transition:opacity .7s,transform .7s}
+.start.gone{opacity:0;transform:translateY(14px);pointer-events:none;visibility:hidden;transition:opacity .7s,transform .7s,visibility 0s .7s}
+.start-btn{background:linear-gradient(135deg,#EFD296,#C99B4A);border:none;color:#1A1305;border-radius:40px;padding:17px 44px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 14px 34px rgba(201,155,74,.45),0 0 0 6px rgba(214,174,98,.18)}
+.start-btn:active{transform:scale(.97)}
+.start-en{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:#EBDDBE;margin-top:12px;direction:ltr}
+.skip-btn{background:none;border:none;color:rgba(255,255,255,.5);font-size:12.5px;margin-top:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.back-btn{position:absolute;top:26px;right:26px;z-index:5;height:38px;padding:0 15px;border-radius:19px;border:1px solid rgba(255,255,255,.25);background:rgba(7,9,15,.5);color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.back-btn.show,.sound-btn.show{display:block}
+.sound-btn{display:none;position:absolute;top:26px;left:26px;z-index:5;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(7,9,15,.5);color:#fff;font-size:15px;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.login-box{width:100%;padding:20px;border-radius:22px;background:rgba(9,13,30,.6);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.15);box-shadow:0 30px 60px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(26px);transition:opacity 1s,transform 1s,visibility 0s 1s}
+.login-box.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.login-label{display:block;font-size:12.5px;font-weight:600;color:#EBDDBE;text-align:right;margin-bottom:8px}
+.login-input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:13px 14px;font-size:15px;color:#fff;outline:none;margin-bottom:14px;text-align:left;direction:ltr}
+.login-input::placeholder{color:rgba(255,255,255,.4)}
+.login-input:focus{border-color:#D6AE62;box-shadow:0 0 0 3px rgba(214,174,98,.2)}
+.login-btn{width:100%;background:linear-gradient(135deg,#EACB8B,#C99B4A);border:none;color:#1A1305;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;box-shadow:0 10px 24px rgba(201,155,74,.35)}
+.login-btn:active{transform:scale(.98)}
+.login-error{color:#FF8A84;font-size:13px;font-weight:600;margin:-4px 0 12px;display:none}
+.login-viewer-btn{background:none;border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
+.login-viewer-btn:hover{background:rgba(255,255,255,.08)}
+@media(prefers-reduced-motion:reduce){.hero-word{animation:none;color:#fff;background:none}.hero-welcome,.login-box,.start{transition:none}}
 
   /* ROLE BADGE */
   .role-badge {
@@ -362,15 +354,67 @@
 
 <!-- LOGIN SCREEN -->
 <div class="login-screen" id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo">🔧</div>
-    <div class="login-title">Buscador de Fichas</div>
-    <div class="login-sub">نظام إدارة قطع الغيار</div>
-    <label class="login-label">🔐 كلمة سر المسؤول</label>
-    <input type="password" class="login-input" id="pwdInput" placeholder="أدخل كلمة السر..." onkeydown="if(event.key==='Enter') tryLogin()">
-    <div class="login-error" id="loginError">❌ كلمة السر غلط، حاول مرة ثانية</div>
-    <button class="login-btn" onclick="tryLogin()">🔓 دخول كمسؤول</button>
-    <button class="login-viewer-btn" onclick="enterViewer()">👁️ دخول للمشاهدة فقط</button>
+  <svg class="scene" id="scene" viewBox="0 170 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050816"/><stop offset=".5" stop-color="#1B2250"/><stop offset=".8" stop-color="#7B4A70"/><stop offset="1" stop-color="#E98A58"/></linearGradient>
+      <radialGradient id="sun"><stop offset="0" stop-color="#FFB070" stop-opacity=".95"/><stop offset=".35" stop-color="#E56E5A" stop-opacity=".45"/><stop offset="1" stop-color="#E56E5A" stop-opacity="0"/></radialGradient>
+      <linearGradient id="gnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#151A33"/><stop offset="1" stop-color="#04060C"/></linearGradient>
+      <pattern id="pf" width="800" height="1100" patternUnits="userSpaceOnUse"><path d="M0 560C120 520 260 540 400 500S680 540 800 560V900H0Z" fill="#2A2347"/></pattern>
+      <pattern id="pn" width="600" height="1100" patternUnits="userSpaceOnUse"><path d="M0 640C100 600 200 650 300 625S500 600 600 640V900H0Z" fill="#120F27"/></pattern>
+      <pattern id="pp" width="300" height="1100" patternUnits="userSpaceOnUse"><rect x="147" y="320" width="6" height="342" fill="#04060C"/><rect x="118" y="336" width="64" height="4" fill="#04060C"/><path d="M0 356Q150 392 300 356" stroke="#04060C" stroke-width="1.6" fill="none"/><path d="M0 346Q150 380 300 346" stroke="#04060C" stroke-width="1.2" fill="none"/></pattern>
+      <pattern id="ps" width="120" height="1100" patternUnits="userSpaceOnUse"><polygon points="22,1100 56,765 78,765 74,1100" fill="#1C2037"/></pattern>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7F8FB"/><stop offset=".55" stop-color="#B4BCCD"/><stop offset="1" stop-color="#6A7490"/></linearGradient>
+      <radialGradient id="lamp"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#FFE3A8" stop-opacity=".7"/><stop offset="1" stop-color="#FFE3A8" stop-opacity="0"/></radialGradient>
+      <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE7B0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE7B0" stop-opacity="0"/></linearGradient>
+      <pattern id="win" width="46" height="14" patternUnits="userSpaceOnUse"><rect x="4" width="34" height="9" rx="3" fill="#FFD9A0"/></pattern>
+    </defs>
+    <rect width="1600" height="1100" fill="url(#sky)"/>
+    <circle cx="900" cy="610" r="470" fill="url(#sun)"/>
+    <g fill="#fff"><circle cx="180" cy="230" r="1.6"/><circle cx="420" cy="300" r="1.2"/><circle cx="640" cy="210" r="1.5"/><circle cx="1010" cy="260" r="1.6"/><circle cx="1230" cy="200" r="1.2"/><circle cx="1420" cy="310" r="1.6"/><circle cx="300" cy="400" r="1.1"/><circle cx="780" cy="370" r="1.1"/><circle cx="1130" cy="420" r="1.1"/></g>
+    <rect class="lyr" data-w="800" data-k=".05" width="2400" height="1100" fill="url(#pf)"/>
+    <rect class="lyr" data-w="600" data-k=".18" width="2400" height="1100" fill="url(#pn)"/>
+    <rect y="660" width="1600" height="440" fill="url(#gnd)"/>
+    <rect class="lyr" data-w="300" data-k=".55" width="2400" height="1100" fill="url(#pp)"/>
+    <g id="trainG" transform="translate(-1400 30)">
+      <ellipse cx="560" cy="735" rx="650" ry="9" fill="#000" opacity=".4"/>
+      <polygon points="1124,688 1760,630 1760,770" fill="url(#beam)"/>
+      <path d="M0 636H1000C1070 636 1115 668 1128 700V708H0Z" fill="url(#body)"/>
+      <rect x="40" y="650" width="960" height="10" fill="url(#win)"/>
+      <path d="M1010 646C1060 646 1092 664 1106 686H1010Z" fill="#0B1226"/>
+      <rect y="688" width="1124" height="4" fill="#D6AE62"/>
+      <rect y="708" width="1124" height="10" fill="#151B30"/>
+      <line x1="60" x2="1040" y1="724" y2="724" stroke="#05070F" stroke-width="12" stroke-dasharray="46 150"/>
+      <circle cx="1118" cy="696" r="80" fill="url(#lamp)"/>
+    </g>
+    <rect class="lyr" data-w="120" data-k="1.4" width="2400" height="1100" fill="url(#ps)"/>
+    <rect y="752" width="1600" height="4" fill="#9AA3BB"/>
+    <rect y="830" width="1600" height="8" fill="#C9D0E4"/>
+  </svg>
+  <div class="cab-frame"></div><div class="glass"></div>
+  <button class="back-btn" id="backBtn" type="button" onclick="restartJourney()">↺ رجوع للبداية</button>
+  <button class="sound-btn" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Sound">🔊</button>
+
+  <div class="hero-brand">
+    <div class="hero-word">TALGO</div>
+    <div class="hero-line"></div>
+    <div class="hero-tag">بوابة الموظفين لقطع الغيار</div>
+    <div class="hero-sub">Buscador de Fichas</div>
+    <div class="hero-welcome" id="heroWelcome">Welcome to Talgo</div>
+  </div>
+
+  <div class="bottom">
+    <div class="start" id="startWrap">
+      <button class="start-btn" type="button" onclick="beginJourney()">ابدأ الرحلة</button>
+      <div class="start-en">Begin the journey</div>
+      <button class="skip-btn" type="button" onclick="revealLogin()">تخطي المقدمة</button>
+    </div>
+    <div class="login-box" id="loginBox">
+      <label class="login-label" for="pwdInput">🔐 كلمة سر المسؤول</label>
+      <input type="password" class="login-input" id="pwdInput" placeholder="أدخل كلمة السر..." onkeydown="if(event.key==='Enter') tryLogin()">
+      <div class="login-error" id="loginError">❌ كلمة السر غلط، حاول مرة ثانية</div>
+      <button class="login-btn" onclick="tryLogin()">🔓 دخول كمسؤول</button>
+      <button class="login-viewer-btn" onclick="enterViewer()">👁️ دخول للمشاهدة فقط</button>
+    </div>
   </div>
 </div>
 
@@ -400,7 +444,7 @@
     </div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search part, code, location..." oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search part, code, location..." oninput="handleSearch(this.value)">
       <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
     </div>
     <div class="stats-bar" id="statsBar">Loading...</div>
@@ -426,8 +470,8 @@
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalTitle">➕ New Part</div>
     <div class="form-group"><label class="form-label">Part Name *</label><input type="text" class="form-input" id="fName" placeholder="e.g. PANTOGRAPH Sliding Strip"></div>
-    <div class="form-group"><label class="form-label">Material Code</label><input type="text" class="form-input" id="fCode" placeholder="e.g. 10060691" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
-    <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" id="fLocation" placeholder="e.g. HM-5R" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="form-group"><label class="form-label">Material Code</label><input type="text" class="form-input" id="fCode" placeholder="e.g. 10060691"></div>
+    <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" id="fLocation" placeholder="e.g. HM-5R"></div>
     <div class="form-group">
       <label class="form-label">Subsystem</label>
       <select class="form-select" id="fSystem">
@@ -440,7 +484,7 @@
       </select>
     </div>
     <div class="form-group"><label class="form-label">Utilization / Description</label><input type="text" class="form-input" id="fUtil" placeholder="e.g. High voltage, Cafeteria..."></div>
-    <div class="form-group"><label class="form-label">Image URL</label><input type="text" class="form-input" id="fImage" placeholder="e.g. https://example.com/image.jpg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="form-group"><label class="form-label">Image URL</label><input type="text" class="form-input" id="fImage" placeholder="e.g. https://example.com/image.jpg"></div>
     <div class="form-group" style="display:flex;gap:10px;align-items:center;">
       <button type="button" class="btn-cancel" style="flex:1;min-width:0;" onclick="removeImage()">إزالة الصورة</button>
       <input type="file" class="form-input" id="fImageFile" accept="image/*" onchange="loadImageFile(event)" style="flex:2;min-width:0;" />
@@ -474,21 +518,7 @@
     <div class="modal-title">🗑️ سلة المحذوفات</div>
     <div id="trashList"></div>
     <div class="modal-footer">
-      <button class="btn-cancel" style="flex:1" onclick="askRestoreCatalog()">↩️ استعادة القطع الأصلية</button>
       <button class="btn-cancel" style="flex:1" onclick="closeTrash()">إغلاق</button>
-    </div>
-  </div>
-</div>
-
-<!-- CONFIRM RESTORE CATALOG -->
-<div class="confirm-overlay" id="restoreCatalogConfirmOverlay">
-  <div class="confirm-box">
-    <div class="confirm-icon">↩️</div>
-    <div class="confirm-title">استعادة القطع الأصلية؟</div>
-    <div class="confirm-text">سيتم إضافة كل القطع الأصلية (228 قطعة) من جديد. القطع الحالية الموجودة تبقى كما هي ولن تُحذف أو تتكرر.</div>
-    <div class="confirm-btns">
-      <button class="btn-no" onclick="closeRestoreCatalogConfirm()">إلغاء</button>
-      <button class="btn-yes" style="background:var(--accent);color:#171310;" onclick="confirmRestoreCatalog()">استعادة</button>
     </div>
   </div>
 </div>
@@ -512,8 +542,8 @@
     <div class="modal-handle"></div>
     <div class="modal-title">📩 طلب إضافة قطعة</div>
     <div class="form-group"><label class="form-label">اسم القطعة *</label><input type="text" class="form-input" id="rName" placeholder="مثال: PANTOGRAPH Sliding Strip"></div>
-    <div class="form-group"><label class="form-label">رقم القطعة (إن وجد)</label><input type="text" class="form-input" id="rCode" placeholder="مثال: 10060691" dir="rtl" style="text-align:right" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
-    <div class="form-group"><label class="form-label">الموقع (إن وجد)</label><input type="text" class="form-input" id="rLocation" placeholder="مثال: HM-5R" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="form-group"><label class="form-label">رقم القطعة (إن وجد)</label><input type="text" class="form-input" id="rCode" placeholder="مثال: 10060691" dir="rtl" style="text-align:right"></div>
+    <div class="form-group"><label class="form-label">الموقع (إن وجد)</label><input type="text" class="form-input" id="rLocation" placeholder="مثال: HM-5R"></div>
     <div class="form-group">
       <label class="form-label">النظام الفرعي</label>
       <select class="form-select" id="rSystem">
@@ -904,6 +934,481 @@ const INITIAL_DATA = [
   {name:"RADIATOR of ABB Battery Charger",code:"10051432",location:"",system:"ELECTRIC",util:"ABB Battery charger"},
   {name:"Non return valve for water system White",code:"10027449",location:"",system:"Water",util:""},
   {name:"Talgo rodal logo",code:"5006877A",location:"",system:"INTERIOR / MECHANICAL",util:"Rodadura"},
+  {name:"Useful alento pantograph",code:"5207186A",location:"D-1-2",system:"PANTOGRAPH / HIGH TENS.",util:"Aleron"},
+  {name:"Ecometer",code:"10040722",location:"",system:"",util:"Alta"},
+  {name:"Spray tests smoke detectors",code:"10018889",location:"",system:"",util:""},
+  {name:"HMI Refrigerator Monitor",code:"10049409",location:"",system:"",util:""},
+  {name:"MCB control card",code:"10067179",location:"",system:"",util:"MCB"},
+  {name:"TAR car with cable",code:"5127401A",location:"M-4-2",system:"",util:"Tracductor aceleración rodadura"},
+  {name:"Wago 4 pole male",code:"416094",location:"",system:"",util:""},
+  {name:"Wago 4 pole female",code:"416095",location:"",system:"",util:""},
+  {name:"Kitchen access door set",code:"5142514A",location:"",system:"",util:""},
+  {name:"Remote box, high voltage measuring equipment.",code:"10043746",location:"G-0",system:"",util:""},
+  {name:"Pole",code:"10053719",location:"",system:"",util:""},
+  {name:"Disturbance cable",code:"10053720",location:"G-2-1",system:"",util:""},
+  {name:"Distin catenary clamp",code:"10065652",location:"Q-1-1",system:"",util:""},
+  {name:"230V enchife pictogram",code:"5164371A",location:"D-3-1",system:"Interiors",util:""},
+  {name:"Pilot indicator light small for PHs desk",code:"10035109",location:"D-4-3",system:"",util:"escritorio del maquinista"},
+  {name:"Indicator button",code:"1008284",location:"",system:"",util:"Generador"},
+  {name:"Indicator pilot lamp",code:"10044265",location:"M-3-3",system:"",util:""},
+  {name:"Monitoring Station PC (security cameras) CCTV",code:"5136607A",location:"D-2-1",system:"Security cameras",util:"Camaras de seguridad"},
+  {name:"Grease exterior doors",code:"10047662",location:"CH-R3",system:"",util:"Perfil elastomero"},
+  {name:"Bar door bar handle",code:"10077757",location:"D-3-2",system:"Interiors",util:"Cafeteria"},
+  {name:"C05 Cafeteria door bar brake",code:"10077413",location:"",system:"Interiors",util:"Cafeteria"},
+  {name:"PMR led light",code:"5007930A",location:"M-3-3",system:"",util:"Luminarias WC"},
+  {name:"Led light cars",code:"10026486",location:"M-3-4",system:"",util:"Luminaria coches"},
+  {name:"Trash Halls",code:"5124221A",location:"F-3-3",system:"Interiors",util:"Pepeleras de coches"},
+  {name:"Paper bin",code:"5149142A",location:"",system:"Interiors",util:"Papeleras"},
+  {name:"Welded paper basket",code:"5149143A",location:"",system:"WC",util:"Papeleras WC"},
+  {name:"Soap pumping valve",code:"10065189",location:"D-2-3",system:"Interiors",util:"Jaboneras"},
+  {name:"Right support for blind sunshade",code:"5193490A",location:"A-1-3",system:"Interiors",util:"Estor coches"},
+  {name:"Left support for blind sunshade",code:"5193489A",location:"A-1-3",system:"Interiors",util:"Estor coches"},
+  {name:"ABB battery charger temperature sensor",code:"10051443",location:"",system:"",util:"ABB"},
+  {name:"CU-AG rod",code:"130008",location:"",system:"",util:""},
+  {name:"Earth braid door battery modules Ground",code:"5144195A",location:"C-2-3",system:"",util:""},
+  {name:"Ground Braid",code:"5144195A",location:"",system:"",util:""},
+  {name:"4 seater gathering table",code:"5110153A",location:"",system:"",util:""},
+  {name:"Speaker for Cars",code:"5125226A",location:"D-4-1",system:"",util:""},
+  {name:"Motor air duct",code:"5121651",location:"",system:"",util:""},
+  {name:"Assembly table of gathering",code:"5107444A",location:"",system:"",util:""},
+  {name:"Continuous Isolation Monitor",code:"10040507",location:"M-3-3",system:"MOTOR",util:""},
+  {name:"Thermal paste",code:"123135",location:"CH-R-1",system:"",util:""},
+  {name:"Battery + D4",code:"10040503",location:"",system:"",util:""},
+  {name:"Battery + G4",code:"10040504",location:"",system:"",util:""},
+  {name:"Flange L 150mm",code:"10038037",location:"D-3-1",system:"",util:""},
+  {name:"Circular 7 pin connector.",code:"10044084",location:"D-1-3",system:"",util:""},
+  {name:"Useful alento pantograph",code:"5207186B",location:"",system:"PANTOGRAPH / HIGH TENS.",util:"Aleron"},
+  {name:"ELECTRONICS OUTDOOR DOORS DCU",code:"10048442",location:"R-4-2",system:"DOORS",util:"PUERTAS EXTERIORES"},
+  {name:"KETA torica board",code:"10061283",location:"",system:"",util:"Coches con freno"},
+  {name:"KETA complete distributor valve for Cars",code:"10040730",location:"H-0",system:"Brake",util:"Coches con freno"},
+  {name:"EP compact EPC-C (without parking brake)",code:"5125721A",location:"HM 1R",system:"Brake",util:"Freno Motriz"},
+  {name:"EP compact EPC-CP (with parking brake)",code:"5125720A",location:"HM 1R",system:"Brake",util:"Freno Motriz"},
+  {name:"External door silencer Extrior door Filter",code:"10072501 / 10019400",location:"D-4-2",system:"DOORS",util:"Puertas Exteriores"},
+  {name:"2P 10A switch",code:"10025613",location:"",system:"",util:"Cafetería Q8"},
+  {name:"Flashlight, Halogen lamp (White light)",code:"10024950",location:"D-4-2",system:"MOTOR",util:""},
+  {name:"Regulator",code:"610619",location:"F-4-2",system:"",util:"Racor 10040489, tuerca 353954, manometro 610033"},
+  {name:"WC door",code:"5111676A",location:"",system:"Interiors",util:"Puerta WC"},
+  {name:"Water shower pressure regulator bide, wc and tap",code:"10037180",location:"D-3-3",system:"",util:"Panel agua WC (2 por panel)"},
+  {name:"Manometer from 0 to 10 bar",code:"610033",location:"Q-3-3",system:"Water",util:"Reguladoras de presión"},
+  {name:"Water purge electrovalve valve",code:"610249",location:"M-3-1",system:"Water",util:"Agua coches 1, 2 y 13."},
+  {name:"Right rearview camera",code:"5130749A",location:"",system:"ELECTRIC",util:"Motriz"},
+  {name:"Left rearview camera",code:"5130748A",location:"G-3",system:"ELECTRIC",util:"Motriz"},
+  {name:"K21",code:"10002500",location:"Q-6-3",system:"",util:"Motriz"},
+  {name:"Riom-s car",code:"5127408A",location:"H-1",system:"",util:""},
+  {name:"WSP anti-lock",code:"5131889B",location:"W-2-1",system:"Brake",util:"COCHES SIN FRENO"},
+  {name:"DNRA anti-lock",code:"5131889A",location:"H-0",system:"Brake",util:"COCHES CON FRENO"},
+  {name:"HIGH PLATFORM",code:"5126538",location:"PLANO",system:"",util:"MOTRIZ"},
+  {name:"PH CRSTAL PROTECTOR FILM",code:"10049980",location:"R-4-3",system:"",util:"CRISTAL MOTRIZ"},
+  {name:"THERMAL MAGNETO Circuit Breaker 1.6 A 2.5 a",code:"10032600",location:"D-1-2",system:"",util:"MOTIRZ Q84,"},
+  {name:"SENSOR INTERIOR DOORS S7",code:"5125901A",location:"M-3-3",system:"",util:""},
+  {name:"COFFEE MAKER",code:"10055301",location:"",system:"",util:""},
+  {name:"1A FUSE",code:"412430",location:"D-2-3",system:"MOTOR",util:"Manipulador de tracción"},
+  {name:"GENERATOR GRILLE",code:"5129645A",location:"HM-1R",system:"GENSET",util:""},
+  {name:"CLEAN SELECTOR",code:"10047336",location:"C-2-3",system:"MOTOR",util:""},
+  {name:"Dopler radar connector",code:"5132593A",location:"F-2-2",system:"",util:"ERTMS Radar"},
+  {name:"CONNECTORS AFTER RODAPIE LIGHTS EMERGENCY MALE",code:"10023324",location:"D-4-2",system:"ILLUMINATION",util:""},
+  {name:"CONNECTORS AFTER RODAPIE LIGHTS EMERGENCY FEMALE",code:"10023325",location:"M-3-1",system:"ILLUMINATION",util:""},
+  {name:"CONNECTORS AFTER RODAPIE LIGHTS EMERGENCY CLIP",code:"10023328",location:"D-4-2",system:"ILLUMINATION",util:""},
+  {name:"ROLDANA DOOR WC",code:"10043997",location:"D-3-2",system:"DOORS",util:""},
+  {name:"Wiper Motor",code:"5406179A",location:"F-2-2",system:"MOTOR",util:""},
+  {name:"EXTERNAL DOOR COVER",code:"5134981A",location:"Q-8-3",system:"DOORS",util:""},
+  {name:"LIMIT SWITCH (S8)",code:"10048452",location:"",system:"",util:""},
+  {name:"POWER SUPPLY",code:"5125247A",location:"M-4-3",system:"ELECTRIC",util:"Power Supply for Video on Demand  VoD"},
+  {name:"INTERIOR DOORS BUTTON",code:"5125861",location:"M-3-3",system:"DOORS",util:""},
+  {name:"WATER LOAD TRAMPILLA",code:"5162397A",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"PANTOGRAPH Saliding Strip",code:"10060691",location:"HM-5R",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"T5 8KW fluorescent tube",code:"442029",location:"Q-5-3",system:"ILLUMINATION",util:""},
+  {name:"G13 18KW fluorescent tube",code:"442032",location:"S-1-1",system:"ILLUMINATION",util:"Luz sala de maquinas"},
+  {name:"Ceiling hall Light (ROOF LIGHT.VESTIB. TALGO AVRIL G3)",code:"5097681A",location:"S-1-1",system:"ILLUMINATION",util:"Cars"},
+  {name:"ROOF LIGHT",code:"5132208A",location:"F-2-1",system:"ILLUMINATION",util:""},
+  {name:"Signs",code:"5133770A",location:"R-3-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"5/2 VIAS PNEUMATIC VALVE For Damper  Under frame",code:"10046463",location:"Q-6-3",system:"INTERIOR / MECHANICAL",util:"Cars Dampers"},
+  {name:"EXTRACTING UNIT",code:"5115927A",location:"HM-4R",system:"EAA",util:""},
+  {name:"EXTRACTOR CYLINDER",code:"10046469",location:"Q-6-3",system:"EAA",util:""},
+  {name:"HIGH MOTOR CABLE (CEILING)",code:"5132201A",location:"H-1-0",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"HIGH CABLE TRENCILLA",code:"5133431A",location:"Q-2-3",system:"PANTOGRAPH / HIGH TENS.",util:"CABLES DE ALTA TENSION"},
+  {name:"BATTERY CHARGER",code:"5109997A",location:"HM-4R",system:"ELECTRIC",util:""},
+  {name:"ELECTRICAL CABINET CHARGER BATTERIES",code:"5128404A",location:"G-3",system:"ELECTRIC",util:""},
+  {name:"EVAPORATOR MOTOR for HVAC",code:"10046471/10094848",location:"G-1-0",system:"HVAC",util:""},
+  {name:"HIGH PRESSURE FAN NOISE DAMPER",code:"10004341",location:"",system:"",util:""},
+  {name:"EAA EXTRACTOR MOTOR Under frame HVAC",code:"10046504",location:"H-3",system:"EAA",util:""},
+  {name:"VCU (CAR 1)",code:"5127405A",location:"N-1-3",system:"ELECTRIC",util:""},
+  {name:"OUTDOOR DOOR OPENING BUTTON",code:"5123805A",location:"Q-3-2",system:"DOORS",util:""},
+  {name:"BATTERY CHARGER MODULE",code:"10051406",location:"HM-9R",system:"ELECTRIC",util:""},
+  {name:"Instantane relay 4 switched 12VDC",code:"10044214",location:"D-4-3",system:"MOTOR",util:"Generador (k63,"},
+  {name:"Timed relay",code:"10044334",location:"",system:"MOTOR",util:"Generador (k235,"},
+  {name:"ASFA 110 V. RELAY",code:"10038529",location:"M-3-3",system:"MOTOR",util:"Asfa"},
+  {name:"LIGHT POSITION SELECTOR",code:"10039933",location:"W-2-1",system:"MOTOR",util:""},
+  {name:"WC DOOR HANDLE",code:"10044051",location:"Q-1-2",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"Hvac",code:"5115926A",location:"",system:"",util:""},
+  {name:"MOTOR CONDENSER MOTOR for Cabin",code:"10046515",location:"W-1-1",system:"",util:""},
+  {name:"HVAC gauge",code:"10064385",location:"Q-4-4",system:"EAA",util:""},
+  {name:"ROOM CONDENSER MOTOR",code:"10046477",location:"G-1-0",system:"EAA",util:""},
+  {name:"RETENTION VALVE (WATER)",code:"10003966",location:"D-1-2",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"FILTER TYPE Y (WATER)",code:"610282",location:"Q-1-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"CDU",code:"5127404A",location:"F-2-1",system:"ELECTRIC",util:""},
+  {name:"Regulating valve filters self-cleaning machine room",code:"10053611",location:"",system:"",util:"Vintilación sala de maquinas"},
+  {name:"MOTOR ROOM MACHINE FAN",code:"5125886A",location:"HM-3",system:"MOTOR",util:""},
+  {name:"CLAMPS 34-40",code:"10006267",location:"C-2-2",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"SOAP HOLDER",code:"10041220",location:"S-1-2",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"EAA DRAIN ELBOW  for HVAC",code:"10049619",location:"M-3-4",system:"INTERIOR / MECHANICAL",util:"Desague HVAC"},
+  {name:"Screw guides bins",code:"10034543",location:"A-1-2",system:"Interiors",util:"Papeleras"},
+  {name:"PMR PAPER GUIDE",code:"10051308",location:"",system:"INTERIOR / MECHANICAL",util:"Papeleras"},
+  {name:"Standard PAPER GUIDE",code:"10049419",location:"D-1-2",system:"INTERIOR / MECHANICAL",util:"Papeleras"},
+  {name:"EXTERNAL DOOR MECHANISM SH-815",code:"R 5130920A/ L 10067732",location:"HM-1R",system:"DOORS",util:""},
+  {name:"DBZ pickup",code:"631274",location:"S-1-1",system:"ELECTRIC",util:""},
+  {name:"BRAKE FLUID",code:"10046364",location:"HM",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"WC Coumplete Seta bowl",code:"5141038A",location:"HM-1R",system:"ELECTRIC",util:""},
+  {name:"Cabin HVAC",code:"5116169A",location:"HM-3R",system:"EAA",util:""},
+  {name:"GPS ANTENNA",code:"10041230",location:"D-3-3",system:"MOTOR",util:""},
+  {name:"TYPE AND 1/2 \"FILTER",code:"610282",location:"Q-1-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"LOGO TALGO STICKER",code:"5151627A",location:"D-3-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"MOTOR PUPITRE VOLTIMETER",code:"10034145",location:"",system:"MOTOR",util:""},
+  {name:"LIMINISCENT PROFILE",code:"10020400",location:"ROOM UP",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"PREF. ARMCHAIR KEYBOARD",code:"5125248A",location:"Q-5-3",system:"ELECTRIC",util:""},
+  {name:"INDV MONITOR PREF. VOD Seat  monitor",code:"5125245A",location:"S-2-2",system:"ELECTRIC",util:""},
+  {name:"SHOWER-BIDET",code:"5125880A",location:"A-2-3",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"PUPITRE TEMPERATURE PROBE ASSEMBLY",code:"5116170A",location:"Q-1-1",system:"ELECTRIC",util:""},
+  {name:"AIR PANEL",code:"5125890A",location:"S-2-2",system:"",util:""},
+  {name:"VALVE",code:"1007103A",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"LLAVIN IN L  Kye for Train Doors",code:"10014266",location:"D-4-2",system:"",util:""},
+  {name:"PAU",code:"5125220A",location:"Q-3-4",system:"ELECTRIC",util:""},
+  {name:"External door diode support",code:"10056987",location:"",system:"",util:""},
+  {name:"External DOOR PRESSURE REGULATOR valve",code:"10048454",location:"M-4-4",system:"DOORS",util:""},
+  {name:"ETHERNET GREEN CABLE M12-RJ45",code:"10044024",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"GREEN CABLE ADAPTER",code:"5179904A",location:"Q-1-3",system:"ELECTRIC",util:""},
+  {name:"TRACTION-BRAKE MANIPULATOR",code:"5130468A",location:"W-2-3",system:"ELECTRIC",util:""},
+  {name:"GORRINILLO OIL",code:"10064764",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"COMPRESSOR OIL",code:"10014695",location:"HM-10",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"SPEAKERS",code:"5125226A",location:"D-4-1",system:"ELECTRIC",util:""},
+  {name:"CONVERTER CAR LIGHTS MY5-L-110 / 35W",code:"5043034A",location:"F-2-1",system:"ILLUMINATION",util:""},
+  {name:"Circuit Breaker MCB 25KV",code:"5129151A",location:"HM-4",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"Main air compressor electrical panel",code:"5125717A",location:"",system:"ELECTRIC",util:"Aire"},
+  {name:"Terminal panel electric air compressor",code:"10075845",location:"",system:"ELECTRIC",util:"Aire"},
+  {name:"Instant relay 4 switched 110VDC",code:"10013410",location:"F-4-1",system:"ELECTRIC",util:"Aire(K149)"},
+  {name:"Three-pole contactor 48-130 VDC / VAC",code:"10032535",location:"M-2-4",system:"ELECTRIC",util:"Aire(K18)"},
+  {name:"Auxiliary contacts block",code:"10032625",location:"D-3-2",system:"ELECTRIC",util:"Aire"},
+  {name:"Contact 2 Q1 x air compressor",code:"10075838",location:"",system:"ELECTRIC",util:"Aire"},
+  {name:"Contact 1 Q1 x air compressor",code:"10075837",location:"",system:"ELECTRIC",util:"Aire"},
+  {name:"Hvac circuit breaker (evaporator, condenser)",code:"10032600",location:"D-1-2",system:"HVAC",util:"Evaporadores, condensadores"},
+  {name:"Q1 air compressor circuit breaker",code:"10075836",location:"",system:"ELECTRIC",util:"Aire"},
+  {name:"K1 Contactor Auxiliary Compressor",code:"10039456",location:"D-4-3",system:"ELECTRIC",util:"Gorrinillo"},
+  {name:"K1 AIR COMPRESSOR CONTACTOR",code:"10040254",location:"M-4-2",system:"ELECTRIC",util:"Aire"},
+  {name:"AIR CONNECTOR 2 POLE MEGAFONIA",code:"10041411",location:"D-1-3",system:"GENSET",util:""},
+  {name:"CONNECTOR PIN",code:"10041039",location:"D-4-2",system:"ELECTRIC",util:""},
+  {name:"MULTIPLE LLAVIN",code:"10013686",location:"D-4-2",system:"TOOLS",util:""},
+  {name:"COMPLETE PANTOGRAPH",code:"5126061A",location:"HM-8R",system:"PANTOGRAPH / HIGH TENS.",util:"Electrical"},
+  {name:"MICRO DOOR WC",code:"10033111",location:"M-3-3",system:"",util:""},
+  {name:"Fuse 2A",code:"10051521",location:"D-1-2",system:"GENSET",util:"Generador"},
+  {name:"5A fuse",code:"10051522",location:"D-2-3",system:"GENSET",util:"Generador"},
+  {name:"10A fuse",code:"10051523",location:"D-1-3",system:"GENSET",util:"Generador"},
+  {name:"F1 FUSE",code:"10051419",location:"M-3-2",system:"ELECTRIC",util:""},
+  {name:"PNEUMATIC VALVE",code:"10046463",location:"Q-6-3",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"Driver's seat button",code:"10011386",location:"",system:"Interiors",util:"Motriz"},
+  {name:"VALVE COIL",code:"10046456",location:"Q-6-3",system:"ELECTRIC",util:""},
+  {name:"RED FLAG WITH HANDLE",code:"10010077",location:"",system:"",util:"BANDERAS DE MOTRIZ"},
+  {name:"RELAY BASE",code:"10003461",location:"B-3-3",system:"ELECTRIC",util:""},
+  {name:"CEILING LIGHT LED CARS",code:"5132262A",location:"Q-8-2",system:"ILLUMINATION",util:"Roof Ceiling LED lights"},
+  {name:"50mm cable terminal of the generator battery",code:"10014840",location:"Q-1-1",system:"GENSET",util:""},
+  {name:"GENSET BATTERY",code:"10060918 / 10099516 New",location:"H-0",system:"",util:""},
+  {name:"CONVERTER 110 / 35W HALL LIGHTS",code:"5043034A",location:"F-2-1",system:"ILLUMINATION",util:""},
+  {name:"K174 WIPER RELAY",code:"10015045",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"WATER PANEL",code:"5128605A",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"21 \"MONITOR",code:"5121191A",location:"N3",system:"ELECTRIC",util:"Monitors Group"},
+  {name:"Cellar evaporator fan",code:"10073349",location:"R-3-2",system:"Refrigerators",util:""},
+  {name:"Cellar evaporator fan",code:"10066359",location:"MH-6R",system:"Refrigerators",util:""},
+  {name:"Cabien Fridge",code:"5133843A",location:"N-1-2",system:"",util:""},
+  {name:"LEVEL SENSORS",code:"10027594",location:"D-3-2",system:"ELECTRIC",util:"Water System tank level Cars# 01,02 & 13"},
+  {name:"MALE PIN XM01 / 743 MORRO",code:"10044289",location:"D-1-1",system:"MOTOR",util:""},
+  {name:"Egru hard drive",code:"10064019",location:"",system:"ELECTRIC",util:""},
+  {name:"EGRU",code:"5124861A",location:"W-3-2",system:"ELECTRIC",util:""},
+  {name:"EXTINGUISHER",code:"10048634",location:"HM-4",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"ADD PANTOGRAPH VALVE",code:"10061507",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"MENBRANA PANTOGRAPH",code:"10071835",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"CONNECTION FITTINGS AND VALVE ADD PANTOGRA",code:"10061590",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"FERODOS \"VARIANTE A\"",code:"514591A",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"OUTDOOR CUSHION TEMPERATURE SENSOR CARS",code:"5138878A",location:"H-1-4",system:"ELECTRIC",util:""},
+  {name:"SENSOR TEMPERATURE INDOOR CUSHIONS CARS",code:"5138878B",location:"H-1-4",system:"ELECTRIC",util:""},
+  {name:"Microwave",code:"10066387",location:"G-0-2",system:"ELECTRIC",util:"Se cambia la ficha por la 10066387"},
+  {name:"Pressure regulator ASSEMBLY Valve for HVAC Damper SV 3.2",code:"10090892",location:"",system:"",util:"CARS"},
+  {name:"OVEN",code:"New 5142530A /10049405",location:"",system:"ELECTRIC",util:""},
+  {name:"DIFFERENTIAL",code:"10047059",location:"",system:"ELECTRIC",util:""},
+  {name:"AUTOMATIC DIF.",code:"10047056",location:"R-1-1",system:"ELECTRIC",util:""},
+  {name:"PRESSURE WAVE SENSOR",code:"10006947 /5441965A",location:"Q-3-2",system:"ELECTRIC",util:""},
+  {name:"WC BUTTON",code:"10033105",location:"Q-1-3",system:"ELECTRIC",util:""},
+  {name:"BATTERY CHARGER FAN",code:"10051430",location:"S-1-2",system:"ELECTRIC",util:""},
+  {name:"DOOR OPENING SWITCH PMR WC",code:"5130899A",location:"F-2-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"LED COVER HOLDER",code:"5134538C",location:"",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"EAA CAR CONTROL MODULE",code:"5115928A",location:"W-3-4",system:"EAA",util:""},
+  {name:"EAA CAR CARD for HVAC Cars",code:"10046527",location:"F-1-2",system:"EAA",util:"Controal Card for HVAC"},
+  {name:"AUTOMATIC F13 CAFETERIA",code:"10047053",location:"",system:"ELECTRIC",util:""},
+  {name:"DIFFERENTIAL F13 CAFETERIA",code:"10047058",location:"D-1-1",system:"ELECTRIC",util:""},
+  {name:"AUXILIARY CONTACT F13 CAFETERIA",code:"10032843",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"PIN FEMALE PRESSURE PRESSURE",code:"10032406",location:"",system:"ELECTRIC",util:""},
+  {name:"LOCTITE FIXING THREADS",code:"126480",location:"TLROOM",system:"TOOLS",util:""},
+  {name:"3/8 REGULATOR REDUCER",code:"610619",location:"F-4-1",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"Hand lamp FLASHLIGHT compete",code:"10034877",location:"Q-4-4",system:"",util:"REAR AND FRONT SIGNALING FLASHLIGHT"},
+  {name:"Hand lamp Charger LANTERN CHARGER",code:"10010984",location:"",system:"",util:""},
+  {name:"B04-B02 CAFETERIA RELAY",code:"10015045",location:"D-1-2",system:"ELECTRIC",util:""},
+  {name:"LUMINAIRE T15 1X8W for machine room light",code:"5151893A",location:"",system:"",util:""},
+  {name:"EAA SCREW",code:"5130904A",location:"HM-2",system:"EAA",util:"10044113,Tornillo largo"},
+  {name:"EAA SAFETY WASHER",code:"10045002",location:"A-3-3",system:"EAA",util:""},
+  {name:"NUT SECURITY",code:"10006033",location:"A-2-2",system:"EAA",util:""},
+  {name:"MACHINE ROOM FILTER",code:"5134962A",location:"",system:"MOTOR",util:""},
+  {name:"CABLE SIDE TAKE",code:"5157492B",location:"",system:"ELECTRIC",util:""},
+  {name:"EXTERIOR IINFORMATION DISPLAY PANEL",code:"5148672A",location:"W-1-3",system:"ELECTRIC",util:""},
+  {name:"BCU1",code:"5131882A",location:"W-1-3",system:"ELECTRIC",util:""},
+  {name:"BCU2",code:"5131882B",location:"F-2-3",system:"ELECTRIC",util:""},
+  {name:"Exterior door motor",code:"10048432",location:"Q-7-2",system:"",util:""},
+  {name:"Motor + inner door support",code:"10051627",location:"Q-4-3",system:"",util:""},
+  {name:"Interior Door Motor",code:"10065043",location:"",system:"DOORS",util:"Sin stok"},
+  {name:"INTERNAL DOOR MOTOR",code:"10051627",location:"Q-4-3",system:"DOORS",util:""},
+  {name:"SH750 DOOR MECHANISM ASSEMBLY. INT",code:"5130922A",location:"H-1",system:"DOORS",util:""},
+  {name:"TRENCILLA WITH Z41 TERMINAL",code:"5037557C",location:"R-1-2",system:"ELECTRIC",util:""},
+  {name:"TRENCILLA TIERRA PUERTA MOTRIZ",code:"10065933",location:"",system:"DOORS",util:""},
+  {name:"GENERATOR EXTINGUISHER",code:"5133188A",location:"M-4-2",system:"INTERIOR / MECHANICAL",util:""},
+  {name:"Capacitor CONVERTER CONDENSER (New)",code:"10063713",location:"",system:"ELECTRIC",util:"Convertidor Motriz"},
+  {name:"CONDENSER CONVERTER (Old)",code:"10040558",location:"H-0",system:"ELECTRIC",util:"Convertidor Motriz"},
+  {name:"NEW CAPACITOR NUT",code:"10064900",location:"",system:"",util:""},
+  {name:"Round terminal new capacitor",code:"10066121",location:"",system:"ELECTRIC",util:"Capacitor"},
+  {name:"New heat shrink condenser",code:"10009837",location:"",system:"ELECTRIC",util:"Capacitor"},
+  {name:"Cable with new capacitor terminal",code:"5137136A",location:"",system:"ELECTRIC",util:"Capacitor"},
+  {name:"New condenser nut",code:"10064900",location:"B-2-1",system:"ELECTRIC",util:"Capacitor"},
+  {name:"New condenser spring washer",code:"10081289",location:"",system:"ELECTRIC",util:"Capacitor"},
+  {name:"New condenser washer capaciter",code:"10064901",location:"A-3-2",system:"ELECTRIC",util:"Capacitor"},
+  {name:"Termianal capacitor cable new",code:"10007087",location:"",system:"ELECTRIC",util:"120-150mm2"},
+  {name:"CONDENSER CABLE TERMINAL Old",code:"10027114",location:"D-2-3",system:"ELECTRIC",util:""},
+  {name:"Remote control set pin (ratchet bogis)",code:"10064474",location:"D-4-3",system:"Brake",util:"Bogis"},
+  {name:"Remote control set (bug ratchet)",code:"10063653",location:"Q-4-2",system:"Brake",util:"Bogis"},
+  {name:"OUTDOOR TEMPERATURE PROBE ASSEMBLY",code:"10046460",location:"Q-1-1",system:"ELECTRIC",util:""},
+  {name:"PROBE",code:"5116170A",location:"Q-1-1",system:"ELECTRIC",util:""},
+  {name:"MIO BT Green 8P LOCKING CONNECTOR",code:"10044330",location:"",system:"",util:""},
+  {name:"WC TAP for Sink",code:"10033109",location:"F-3-2",system:"ELECTRIC",util:""},
+  {name:"WC BINOPTIC SENSOR for Sink",code:"10062350",location:"",system:"WC",util:""},
+  {name:"SOLENOID VALVE 5/2 for Sink",code:"10062349",location:"",system:"WC",util:""},
+  {name:"GSMR FUSE",code:"10041576",location:"",system:"ELECTRIC",util:""},
+  {name:"VOLTIMETER C.C. 150 V.",code:"435059",location:"Q-3-3",system:"MOTOR",util:""},
+  {name:"LED STRIPE BOX",code:"5134532A",location:"F-2-1",system:"ILLUMINATION",util:""},
+  {name:"PANTOGRAPH Neumatic PANEL",code:"5131338A",location:"H-1",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"PANTOGRAPH INSULATOR/SCREW/WASHER NOMEL",code:"10061509/10061298 /10061303",location:"",system:"PANTOGRAPH / HIGH TENS.",util:""},
+  {name:"CARTRIDGE FILTERS ROOM MACHINES",code:"5156520A",location:"",system:"MOTOR",util:""},
+  {name:"CONDENSING UNIT",code:"10049407",location:"HM-1R",system:"EAA",util:""},
+  {name:"EAA COMPLETE",code:"5115926",location:"",system:"EAA",util:""},
+  {name:"EAA PACKING UNIT",code:"5115739A",location:"",system:"EAA",util:""},
+  {name:"EAA ELECTRONICS Cabin HVAC",code:"5141116A",location:"S-2-2",system:"EAA",util:""},
+  {name:"DVR recorder / DVR Hard Disk",code:"5126589A / 10045951",location:"S-1-1",system:"Security cameras",util:""},
+  {name:"MOBILE VOICE RECORDER",code:"5146913A",location:"S-2-2",system:"ELECTRIC",util:""},
+  {name:"CIP",code:"5125221A",location:"Q-4-4",system:"ELECTRIC",util:""},
+  {name:"LUBRI-LIMP",code:"121518",location:"",system:"TOOLS",util:""},
+  {name:"K78 TRACTION COOLING MOTORS",code:"10039456",location:"",system:"ELECTRIC",util:""},
+  {name:"K12 MACHINE ROOM REFRIGERATION CONTACTOR",code:"10041577",location:"D-1-2",system:"ELECTRIC",util:"K12"},
+  {name:"EV + TAP COIL",code:"10062349",location:"",system:"ELECTRIC",util:""},
+  {name:"READING LIGHT + PULSED + TRAFFIC",code:"10044270",location:"M-3-1",system:"ILLUMINATION",util:""},
+  {name:"EAA MOTOR MODE SELECTOR",code:"10043962",location:"R-4-3",system:"MOTOR",util:""},
+  {name:"EAA MOTOR EMERGENCY SELECTOR",code:"10043963",location:"R-4-3",system:"MOTOR",util:""},
+  {name:"SIDE TAKE",code:"10041141",location:"D-4-3",system:"MOTOR",util:""},
+  {name:"LED LIGHT BOX 13W / 1757mm",code:"10058938",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"LED LIGHT BOX 10W / 1347mm",code:"10058939",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"LED LIGHT BOX 6W / 835mm",code:"10058940",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"\"    \"",code:"10058939",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"\"     \"",code:"10058940",location:"S-1-1",system:"ILLUMINATION",util:""},
+  {name:"ELECTRONICS TAP for WC Sink",code:"10062348",location:"C-2-3",system:"",util:"WC control card"},
+  {name:"MULTILED DIODE",code:"464258",location:"A-2-3",system:"ELECTRIC",util:""},
+  {name:"WC ELECTRONICS",code:"5125879A",location:"W-1-2",system:"ELECTRIC",util:""},
+  {name:"K5 CONTACTOR",code:"10038831",location:"M-3-3",system:"ELECTRIC",util:""},
+  {name:"PINNHEMBRA (INTERCOM. EMERGENCY",code:"10041042",location:"D-4-2",system:"ELECTRIC",util:""},
+  {name:"Plastic Light emergency corridor tourist",code:"10068552/7",location:"",system:"ILLUMINATION",util:"Luces de emergencias pasillo turistas"},
+  {name:"EMERGENCY LIGHT for seat Econemy",code:"5140306B/A",location:"C-2-3/S-1-1",system:"ILLUMINATION",util:""},
+  {name:"Ultaviolet light UV Lamp",code:"100066366/10011215",location:"",system:"",util:"Agua, cafetería."},
+  {name:"EMERGENCY LIGHT BUSSINESS",code:"10045465",location:"M-3-4",system:"ILLUMINATION",util:""},
+  {name:"WC Hand Dry",code:"10041088",location:"D",system:"ELECTRIC",util:"WC"},
+  {name:"250 / F4 FUSE",code:"412418",location:"D-4-2",system:"ELECTRIC",util:""},
+  {name:"EMERGENCY PUSH BUTTON  WC Inside",code:"10032837",location:"Q-4-2",system:"ELECTRIC",util:""},
+  {name:"OIL CONTROL UNIT",code:"10060613",location:"",system:"",util:""},
+  {name:"OIL CONTROL BLOCK",code:"10081277",location:"",system:"",util:""},
+  {name:"THERMOSTAT",code:"10081278",location:"",system:"",util:""},
+  {name:"MAIN ELEMENT",code:"10081317",location:"",system:"",util:""},
+  {name:"PISTON CONTROL",code:"10081318",location:"",system:"",util:""},
+  {name:"COMPRESSION SPRING",code:"10081319",location:"",system:"",util:""},
+  {name:"O-RING",code:"10081279",location:"",system:"",util:""},
+  {name:"STOPPER",code:"10081280",location:"",system:"",util:""},
+  {name:"RETAINING RING 38X1.5",code:"10081311",location:"",system:"",util:""},
+  {name:"DOUBLE NIPPLE",code:"10081312",location:"",system:"",util:""},
+  {name:"OIL FILT.CARTRIDGE",code:"10048647",location:"",system:"",util:""},
+  {name:"O-RING",code:"10081313",location:"",system:"",util:""},
+  {name:"STUD M8X30",code:"10081314",location:"",system:"",util:""},
+  {name:"LOCKING RING A08",code:"10014814",location:"",system:"",util:""},
+  {name:"HEXAGON NUT M8",code:"10068347",location:"",system:"",util:""},
+  {name:"SEALING RING A17X21",code:"10081315",location:"",system:"",util:""},
+  {name:"SCREW PLUG G3 / 8A",code:"10081316",location:"",system:"",util:""},
+  {name:"FRONT Sunshade for PH",code:"5238917A",location:"Sun shade",system:"Interiors",util:"Estor PHs sun shade"},
+  {name:"ELECTRIC MOTOR for sunshade for PH",code:"10082309",location:"Sun shade",system:"",util:"Estor PHs"},
+  {name:"LOWER BAR SPRING",code:"10082303",location:"",system:"Interiors",util:"Estor PHs"},
+  {name:"TOP GUIDE COVER",code:"10082304",location:"",system:"Interiors",util:"Estor PHs"},
+  {name:"LOWER GUIDE COVER",code:"10082305",location:"",system:"Interiors",util:"Estor PHs"},
+  {name:"LOWER BAR COVER",code:"10082306",location:"",system:"Interiors",util:"Estor PHs"},
+  {name:"ROPE",code:"10082307",location:"",system:"Interiors",util:"Estor PHs"},
+  {name:"PULLEY",code:"10082308",location:"",system:"Interiors",util:"Estor PHs"},
+  {name:"Welding rod",code:"135008",location:"",system:"",util:""},
+  {name:"Borax for welding rods",code:"135401",location:"",system:"",util:""},
+  {name:"Swivel Pivot, Bolt",code:"5216893A",location:"",system:"",util:"Enganche morro."},
+  {name:"Coolant converters",code:"10048496",location:"",system:"",util:"Convertidores"},
+  {name:"Talgo rodal logo",code:"5006877A",location:"",system:"",util:""},
+  {name:"External door extrior Push Botton",code:"5123805A",location:"",system:"",util:""},
+  {name:"Antena GSMR-GPS ERTMS/ETCS",code:"10031619",location:"",system:"",util:""},
+  {name:"Grease exterior doors (grey)",code:"10041591",location:"",system:"",util:""},
+  {name:"Grease exterior doors (white)",code:"10063686",location:"",system:"",util:""},
+  {name:"Train batteries water",code:"133401",location:"",system:"",util:""},
+  {name:"Generator Coolant",code:"10060392",location:"",system:"",util:""},
+  {name:"Cabin Fridgfe",code:"5133843A",location:"",system:"",util:"PHs"},
+  {name:"COMPRESSOR WASHER after Oil fill",code:"10033358",location:"",system:"",util:"washer"},
+  {name:"INTERNAL DOOR DCU",code:"10050797",location:"",system:"",util:""},
+  {name:"CCTV Camera",code:"5126591A",location:"",system:"",util:""},
+  {name:"Push Botton for Intrior Door",code:"5154087A/5125861A",location:"",system:"",util:""},
+  {name:"Fire  Extinguisher",code:"10048634",location:"",system:"",util:""},
+  {name:"Keta DISTRIBUTOR VALVE COMPLETE POWER HEAD",code:"10039566",location:"",system:"",util:""},
+  {name:"Boiler Heater",code:"10066388 / 5171888A",location:"",system:"",util:""},
+  {name:"PRESSURE REGULATOR ASSEMBLY Valve for Ex. Door",code:"5178589A",location:"",system:"",util:""},
+  {name:"Eur Obalise Antenna",code:"5132237A",location:"",system:"",util:"ERTMS EUROBALIZED ANTENNA"},
+  {name:"SCHUKO TYPE SOCKET  ( Enchufe) XS2",code:"10037956",location:"",system:"",util:"Electriacl"},
+  {name:"ZENER DIODE (D11)",code:"10048782",location:"",system:"",util:""},
+  {name:"SPORT OF ZENER DIODE (D11)",code:"10056987",location:"",system:"",util:""},
+  {name:"SOCKET FOR CFETERIA XS4",code:"10078196",location:"",system:"",util:""},
+  {name:"PRESSURE TRANSDUCER",code:"10039575",location:"",system:"",util:""},
+  {name:"Battery Charger Pump",code:"10051431",location:"",system:"",util:"Battery Charger"},
+  {name:"Vagner Fire",code:"5125832A",location:"",system:"",util:"Fire Protection Machine"},
+  {name:"ABB battery charger Contector KM1",code:"10051417",location:"",system:"",util:"ABB Battery Charger"},
+  {name:"Transducer pressure of Cabin High Pressure",code:"10046481",location:"",system:"",util:""},
+  {name:"Transducer pressure of Cabin High Pressure",code:"10046482",location:"",system:"",util:""},
+  {name:"Cold Stroage Fan",code:"10073349",location:"",system:"",util:""},
+  {name:"DRIVING CABIN HVAC CONTROL PANEL",code:"5141116A",location:"",system:"",util:"Cabin"},
+  {name:"Main comp. Oil",code:"10014645",location:"",system:"",util:"Main Compressor"},
+  {name:"Battery Charger (Gen-set Battery)",code:"10064505",location:"",system:"",util:"Machine room Genset"},
+  {name:"Roof Switch for roof line (25KV)",code:"5129152A",location:"",system:"",util:"High Voltage"},
+  {name:"Pressure Transducer for Brake panel Hydrolic",code:"10039363",location:"",system:"",util:"Brake system Hydralic system"},
+  {name:"Non return valve for water system",code:"10003966",location:"Q-9-3",system:"",util:"Water System"},
+  {name:"TEMPERATURE SENSOR for Boji",code:"10055578",location:"",system:"",util:"Temp Sensor"},
+  {name:"Fuse Hloder  1A/2A",code:"10008994",location:"",system:"",util:"For card Z05 and Z06"},
+  {name:"RELAY TERMINAL GREEN Relay",code:"10018362",location:"",system:"",util:""},
+  {name:"Clamp for cable of antenna euro blace",code:"10051949",location:"",system:"",util:""},
+  {name:"O-RING for Batteries filling line",code:"10075795",location:"",system:"",util:"Batteries for train"},
+  {name:"4P LOCKING MALE CONNECTOR D",code:"10044116",location:"",system:"",util:"Sunshade male connector"},
+  {name:"CONNECTOR FEMALE 4P",code:"10024422",location:"",system:"",util:"Sunshade female connector"},
+  {name:"SOLENOID VALVE-COIL 24V",code:"10046479",location:"",system:"",util:"HVAC"},
+  {name:"HMI MONITOR Car 5",code:"10049409",location:"",system:"",util:"Cafeteria"},
+  {name:"CLEANER LUBRICANT for Electrical CRC",code:"121518",location:"",system:"",util:"Cleaner for Elect. Contect"},
+  {name:"FEMALE TERMINAL complete isolate",code:"403665",location:"",system:"",util:"Legs"},
+  {name:"EXTERIOR INFERIOR IZQDO/DRCHO Light",code:"5134954A",location:"",system:"",util:"EXTERIOR INFERIOR IZQDO/DRCHO"},
+  {name:"Hand lamp only Lamp",code:"10024950",location:"",system:"",util:"Hand lamp only Lamp"},
+  {name:"TEMPERATURE SENSOR for Bogie GearBox",code:"10055582",location:"",system:"",util:"Gearbox"},
+  {name:"DIRECT ROOF LIGHTING (RIGHT)/DIRECT ROOF LIGHTING (LEIFT)",code:"5136223A/5132208A",location:"",system:"",util:"DIRECT ROOF LIGHTING (RIGHT)/DIRECT ROOF LIGHTING (LEIFT)"},
+  {name:"COMPLETE BOTTLE FOR BRAKE FLUID Liquid",code:"100",location:"",system:"",util:""},
+  {name:"LIGHT EXTERIOR INFERIOR IZQDO/DRCHO",code:"5134954A",location:"",system:"",util:""},
+  {name:"Power Head External Door Ruber / SEALING PROFILE",code:"10025861 / 5148538A",location:"",system:"",util:""},
+  {name:"Q1 for cafetaria panel",code:"10072582",location:"",system:"",util:""},
+  {name:"INSULATOR for Pantograph",code:"10061509",location:"",system:"",util:""},
+  {name:"Light for Cabin PHs roof cabin",code:"5042923A",location:"",system:"",util:""},
+  {name:"TOILET SEAT with cover  for WC",code:"10043437",location:"",system:"",util:""},
+  {name:"TEMPERATURE SENSOR STATOR",code:"10055585",location:"",system:"",util:""},
+  {name:"Blue tube for WC",code:"10029470",location:"",system:"",util:""},
+  {name:"CONVERTER  for reading light 110V  100W",code:"10023049",location:"",system:"",util:"12V 100W 110VDC 20KHZ"},
+  {name:"Hand rest of Driver Seat Left\\Right",code:"10011380\\10011379",location:"",system:"",util:""},
+  {name:"Aux Convertor Power Module",code:"5114676A",location:"",system:"",util:"BT / Alstom"},
+  {name:"EVC ERTMS/ETCS",code:"5131642A",location:"",system:"",util:""},
+  {name:"Rubber for water filling end",code:"505503",location:"",system:"",util:""},
+  {name:"Water Pump Wiper",code:"3100194/ 10089672 New",location:"",system:"",util:""},
+  {name:"Fire Detector for Cars",code:"5125831A",location:"",system:"",util:"SMOKE DETECTOR"},
+  {name:"IMPULSES SENSOR  Speed Sensor",code:"5145781A",location:"",system:"",util:"External door"},
+  {name:"OUTDOOR EMERGENCY DEVICE Open button from out Ex. Door",code:"5123800",location:"",system:"",util:""},
+  {name:"CYCLONIC EXTRACTORS Fan",code:"5125885A",location:"",system:"",util:""},
+  {name:"COTTER PIN for Brake Pad",code:"265269",location:"",system:"",util:""},
+  {name:"Ball for Aux Brake handle",code:"10034729",location:"",system:"",util:"Brake System"},
+  {name:"Aux Brake Handle with valve",code:"10004147",location:"",system:"",util:"Brake System"},
+  {name:"Main Transformer Oil",code:"10050329",location:"",system:"",util:""},
+  {name:"CCTV HMI",code:"5126592A",location:"",system:"",util:""},
+  {name:"External Light front Head Top",code:"5134955A",location:"",system:"",util:"Light"},
+  {name:"floricent light for Machine room, T8 1X18W LUMINAIRE",code:"5088230A",location:"",system:"",util:""},
+  {name:"Sikaflex Black",code:"126425",location:"",system:"",util:""},
+  {name:"Battery new for trains",code:"10040502",location:"",system:"",util:""},
+  {name:"PMR DCU Door control Unit",code:"10050797",location:"",system:"",util:""},
+  {name:"Micro switch for fridge door white",code:"10036629",location:"",system:"",util:"MICRO SWITCH"},
+  {name:"Talgo type",code:"126821",location:"",system:"",util:""},
+  {name:"Out door Transformer 25KV TENSION TRANSDUCER PT",code:"5130603A",location:"",system:"",util:""},
+  {name:"Rodal CABLE 35 MM2 WITH TERMINALS Rudal Groud cable",code:"5161179A",location:"",system:"",util:""},
+  {name:"O Ring for ECO meter / O Ring Lubrication",code:"10075743 / 10026521",location:"",system:"",util:""},
+  {name:"Electric Contact Grease",code:"10016943",location:"",system:"",util:""},
+  {name:"K2 relay for compressor control",code:"10075840",location:"",system:"",util:""},
+  {name:"RED FLAG WITH HANDLE",code:"10010077",location:"",system:"",util:""},
+  {name:"EKE S-Riom Card HSA2620A",code:"10049118",location:"",system:"",util:""},
+  {name:"CONTENT SERVER CS",code:"5121193A",location:"",system:"",util:""},
+  {name:"K1 AUXILIARY CONTACT BLOCK for main Copmressor",code:"10056496",location:"",system:"",util:"Main Compressor"},
+  {name:"SPACER FOR PROTECTION PLATE for FUSE cover ( Long )",code:"5105459A",location:"",system:"",util:"Main Fuses"},
+  {name:"SPACER FOR PROTECTION PLATE for FUSE cover ( Short )",code:"5172631A",location:"",system:"",util:"Main Fuses"},
+  {name:"Leg Terminal for Capcitor filter 120-150 MM2;BORNAJE M16",code:"10007087",location:"",system:"",util:""},
+  {name:"Cover for WC door lock angel white plastic",code:"5164797A",location:"",system:"",util:""},
+  {name:"FOOTREST SUPPORT for Eco",code:"10083863",location:"",system:"",util:""},
+  {name:"FRESH AIR SERVOMOTOR for HVAC Damper",code:"10046459",location:"",system:"",util:""},
+  {name:"AUTOMATIC COFFEE MAKER",code:"10057186",location:"",system:"",util:""},
+  {name:"Gaskit for ECO meter control connector",code:"10104208",location:"",system:"",util:""},
+  {name:"Y4 Sloinde valve for External Door Black",code:"10048436",location:"",system:"",util:""},
+  {name:"Table Hinge Eco",code:"5339314A New",location:"",system:"",util:""},
+  {name:"Table Hinge Business",code:"5407500A New/ 5032855A Old",location:"",system:"",util:""},
+  {name:"Emergency Brake Valve ( Push botton Brake)",code:"5121989A",location:"",system:"",util:""},
+  {name:"Fuse 1250",code:"10050080",location:"",system:"",util:""},
+  {name:"EUROBALISE AERIAL CONNECTOR",code:"5132595A",location:"",system:"",util:""},
+  {name:"WINDSHIELD WASHER SELECTOR for wiper",code:"10047336",location:"",system:"",util:""},
+  {name:"EUROBALISE AERIAL Groung Or Earthing",code:"5146567A",location:"",system:"",util:""},
+  {name:"Micromesh Filter for Comp",code:"10083274",location:"",system:"",util:""},
+  {name:"DMI",code:"5131753A",location:"",system:"",util:""},
+  {name:"RADIATOR of ABB Battery Charger",code:"10051432",location:"",system:"",util:""},
+  {name:"Cupler fron protection Cover",code:"5143039A",location:"",system:"",util:""},
+  {name:"BUS Cupler REPEATER",code:"5127409A",location:"",system:"",util:""},
+  {name:"Non return valve for water system White",code:"10027449",location:"",system:"",util:""},
+  {name:"PMR TOILET LOCK SLAVE ASSEMBLY",code:"5150025A",location:"",system:"",util:""},
+  {name:"ETCS cabint Door Lick",code:"10106658",location:"",system:"",util:""},
+  {name:"Conector femail 6P for Eco Meter",code:"10037844",location:"",system:"",util:""},
+  {name:"Fitting of Regulator valve (MALE FITTING)",code:"10044071",location:"",system:"",util:""},
+  {name:"Pilo for PMR 2 Seats Fro specical",code:"5614060A",location:"",system:"",util:""},
+  {name:"Air dryer for Compressor",code:"Z5125715A",location:"",system:"",util:""},
+  {name:"IMPULSE SOLENOID VALVE air dryer",code:"10056396",location:"",system:"",util:""},
+  {name:"ACELEROMETRO ERTMS/ETCS White Screw",code:"10076122",location:"",system:"",util:""},
+  {name:"Talgo Logo on Rudal + Adhesive",code:"5006877A + 126433",location:"",system:"",util:""},
+  {name:"Red valve for condensate tank Comp",code:"10030060",location:"",system:"",util:""},
+  {name:"Orange Relay 480VAC VOLTAGE CONTROL RELAY",code:"10043713",location:"",system:"",util:""},
+  {name:"Battery charger cooling fan KM12 KM13 Contactor",code:"10051429",location:"",system:"",util:""},
+  {name:"RADIATOR MAIN CAP for Genset",code:"10083724",location:"",system:"",util:""},
+  {name:"Cable ties  for heat area",code:"10038037",location:"",system:"",util:""},
+  {name:"Insulation Tester  ( Magger)",code:"10015462",location:"",system:"",util:""},
+  {name:"MVB Board for Battery charger",code:"10051414",location:"",system:"",util:""},
+  {name:"Micro switch for Battery charger Fuse F1",code:"10052869",location:"",system:"",util:""},
+  {name:"COMPLETE GRILL Small",code:"5141600A",location:"",system:"",util:""},
+  {name:"COMPLETE GRILL large big",code:"5110094A",location:"",system:"",util:""},
+  {name:"Check Valve for Brake side panel",code:"10029740",location:"",system:"",util:""},
+  {name:"PANEL SP01A for SV Distribution Valve",code:"5125890A",location:"",system:"",util:""},
+  {name:"WIFI ACCESS POINT Indra Wifi",code:"5131397A / 5131398A (Car 04)",location:"",system:"",util:""},
+  {name:"THREE POLES CONTACTOR K1 in brake banel (230V) with Aux",code:"10041499 / 10048514 (Aux)",location:"",system:"",util:""},
+  {name:"O-Ring for Keta Cars",code:"10061283",location:"",system:"",util:""},
+  {name:"Under sink door",code:"5110176A",location:"",system:"",util:""},
+  {name:"PNEUMATIC CILINDER under frame for HVAC",code:"10046469",location:"",system:"",util:""},
+  {name:"FRESH AIR MOTOR-FAN ASSEMBLY for HVAC",code:"10054650",location:"",system:"",util:""},
+  {name:"Spring for Brake Pad",code:"10075660",location:"",system:"",util:""},
+  {name:"Gateway for Indra Wifi",code:"5131399A",location:"",system:"",util:""},
+  {name:"Speed sensor Rudals IMPULSES SENSOR",code:"5143528A",location:"",system:"",util:""},
+  {name:"Conector femail and male for under sink WC",code:"10034641/10034090",location:"",system:"",util:""},
+  {name:"Pins Conector femail and male for under sink WC",code:"10013754/10032974",location:"",system:"",util:""},
+  {name:"Z68 cabinet door HINGES FOR VX",code:"10105246",location:"",system:"",util:""},
+  {name:"TORSION SPRING for cuppler front for locking door",code:"10083699",location:"",system:"",util:""},
+  {name:"Coffee machine filter support or extention / Filter of coffee",code:"10065350/10065349",location:"",system:"",util:""},
+  {name:"HOURS COUNTER for compressor",code:"10071226",location:"",system:"",util:""},
+  {name:"180º OPENING HINGE for Cold stroage and celler",code:"5078889A",location:"",system:"",util:""},
+  {name:"Arm Rest for Busuiness",code:"5140011A",location:"",system:"",util:""},
+  {name:"Driver chair bottom air conector",code:"10050838",location:"",system:"",util:""},
+  {name:"valve D03.01.23",code:"10050512",location:"",system:"",util:""},
+  {name:"External Door Limit switch S10",code:"10048451",location:"",system:"",util:""},
+  {name:"Transformer oil sample bottle",code:"10083597",location:"",system:"",util:""},
+  {name:"ETCS Slector on Z68",code:"10054893",location:"",system:"",util:""},
+  {name:"Air tube for pantograph  (Loctite 577)",code:"10095480 / 126399 (Loctite 577)",location:"",system:"",util:""},
+  {name:"Loctite alfi quick",code:"126492",location:"",system:"",util:""},
 ];
 
 let parts = [];
@@ -938,9 +1443,8 @@ function isTempAccessActive() { return !!(tempAccess && tempAccess.expiresAt > D
 function initFirebaseSync() {
   db.ref('parts').on('value', snap => {
     const val = snap.val();
-    const isEmpty = val === null || (Array.isArray(val) && val.length === 0);
-    if (isEmpty) {
-      // القاعدة فاضية (أول تشغيل، أو انمسحت البيانات بالغلط): نزرع البيانات الأولية على السيرفر
+    if (val === null) {
+      // أول تشغيل للموقع: نزرع البيانات الأولية مرة واحدة على السيرفر
       db.ref('parts').set(INITIAL_DATA.map((p, i) => ({...p, id: Date.now() + i})));
       return;
     }
@@ -1471,25 +1975,6 @@ function confirmPurge() {
   purgingId = null;
 }
 
-function askRestoreCatalog() {
-  if (currentRole !== 'admin') return;
-  document.getElementById('restoreCatalogConfirmOverlay').classList.add('show');
-}
-function closeRestoreCatalogConfirm() { document.getElementById('restoreCatalogConfirmOverlay').classList.remove('show'); }
-function confirmRestoreCatalog() {
-  if (currentRole !== 'admin') return;
-  const existingCodes = new Set(parts.map(p => (p.code||'').trim().toLowerCase()).filter(Boolean));
-  const missing = INITIAL_DATA.filter(p => !p.code || !existingCodes.has(p.code.trim().toLowerCase()));
-  if (!missing.length) {
-    closeRestoreCatalogConfirm();
-    showToast('✅ كل القطع الأصلية موجودة أصلاً');
-    return;
-  }
-  parts = [...parts, ...missing.map((p, i) => ({...p, id: Date.now() + i}))];
-  save(); closeRestoreCatalogConfirm(); renderFilters(); renderCards();
-  showToast(`↩️ تمت استعادة ${missing.length} قطعة`);
-}
-
 // PART REQUESTS (viewer submits, admin reviews)
 function openRequestModal() {
   if (currentRole !== 'viewer') return;
@@ -1653,8 +2138,135 @@ function closeImagePreview(event) {
   document.getElementById('imagePreviewOverlay').classList.remove('show');
 }
 
-document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeConfirm(); closeTrash(); closePurgeConfirm(); closeRequestModal(); closeRequests(); closeRequestDetail(); closeRejectConfirm(); closeTempAccessModal(); closeRestoreCatalogConfirm(); document.getElementById('imagePreviewOverlay').classList.remove('show'); } });
+document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeConfirm(); closeTrash(); closePurgeConfirm(); closeRequestModal(); closeRequests(); closeRequestDetail(); closeRejectConfirm(); closeTempAccessModal(); document.getElementById('imagePreviewOverlay').classList.remove('show'); } });
 document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key==='Enter') tryLogin(); });
+</script>
+<script>
+/* Talgo gate: cab-window journey with synthesized sound + spoken welcome */
+(function(){
+  var layers=[].map.call(document.querySelectorAll('.lyr'),function(e){return{e:e,w:+e.dataset.w,k:+e.dataset.k,o:0}});
+  var scene=document.getElementById('scene'),screenEl=document.getElementById('loginScreen');
+  var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var speed=.1,target=.1,phase='idle',last=0,clack=0,muted=false,revealed=false,tm=null,loopOn=true;
+  var trainEl=document.getElementById('trainG'),trainStart=0,backBtn=document.getElementById('backBtn'),soundBtn=document.getElementById('soundBtn');
+  function ctl(on){ backBtn.classList[on?'add':'remove']('show'); soundBtn.classList[on?'add':'remove']('show'); }
+  function killAudio(){ try{ if(window.speechSynthesis)speechSynthesis.cancel(); }catch(e){} try{ if(AC)AC.close(); }catch(e){} AC=null; master=null; rumbleGain=null; noiseBuf=null; }
+  var AC,master,rumbleGain,noiseBuf;
+
+  function audioInit(){
+    if(AC)return; var C=window.AudioContext||window.webkitAudioContext; if(!C)return;
+    AC=new C(); master=AC.createGain(); master.gain.value=muted?0:.9; master.connect(AC.destination);
+    noiseBuf=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate); var d=noiseBuf.getChannelData(0);
+    for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    var src=AC.createBufferSource(); src.buffer=noiseBuf; src.loop=true;
+    var lp=AC.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=190;
+    rumbleGain=AC.createGain(); rumbleGain.gain.value=0;
+    var o=AC.createOscillator(); o.type='sine'; o.frequency.value=46; var og=AC.createGain(); og.gain.value=.5;
+    src.connect(lp); lp.connect(rumbleGain); o.connect(og); og.connect(rumbleGain); rumbleGain.connect(master);
+    src.start(); o.start();
+  }
+  function bell(f,t,dur,vol){
+    [1,2.76,5.4].forEach(function(m,i){
+      var o=AC.createOscillator(),g=AC.createGain(); o.type='sine'; o.frequency.value=f*m;
+      var v=vol/(i*2+1); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+dur/(i+1));
+      o.connect(g); g.connect(master); o.start(t); o.stop(t+dur+.1);
+    });
+  }
+  function stationChime(){ if(!AC)return; var t=AC.currentTime+.05; bell(784,t,2.2,.22); bell(587,t+.55,2.8,.22); }
+  function readyChime(){ if(!AC)return; var t=AC.currentTime+.02; bell(523,t,1.4,.16); bell(659,t+.16,1.4,.16); bell(784,t+.32,2,.18); }
+  function tick(vol){
+    if(!AC)return; var s=AC.createBufferSource(); s.buffer=noiseBuf; var b=AC.createBiquadFilter(); b.type='bandpass'; b.frequency.value=700; b.Q.value=.8;
+    var g=AC.createGain(),t=AC.currentTime; g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+.07);
+    s.connect(b); b.connect(g); g.connect(master); s.start(t,Math.random(),.09);
+  }
+  function hiss(){
+    if(!AC)return; var s=AC.createBufferSource(); s.buffer=noiseBuf; var h=AC.createBiquadFilter(); h.type='highpass'; h.frequency.value=2600;
+    var g=AC.createGain(),t=AC.currentTime; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.09,t+.2); g.gain.exponentialRampToValueAtTime(.0001,t+1.8);
+    s.connect(h); h.connect(g); g.connect(master); s.start(t,0,2);
+  }
+  function horn(){
+    if(!AC)return; var t=AC.currentTime+.25;
+    [311,392].forEach(function(f){
+      var o=AC.createOscillator(),g=AC.createGain(),lp=AC.createBiquadFilter(); o.type='sawtooth'; o.frequency.value=f; lp.type='lowpass'; lp.frequency.value=1100;
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.09,t+.06); g.gain.setValueAtTime(.09,t+.9); g.gain.exponentialRampToValueAtTime(.0001,t+1.3);
+      o.connect(lp); lp.connect(g); g.connect(master); o.start(t); o.stop(t+1.4);
+    });
+  }
+  function passBy(){
+    if(!AC)return; var s=AC.createBufferSource(); s.buffer=noiseBuf; s.loop=true; var b=AC.createBiquadFilter(); b.type='bandpass'; b.Q.value=.7;
+    var g=AC.createGain(),t=AC.currentTime+.3;
+    b.frequency.setValueAtTime(300,t); b.frequency.exponentialRampToValueAtTime(1400,t+1.7); b.frequency.exponentialRampToValueAtTime(350,t+3.4);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.22,t+1.7); g.gain.linearRampToValueAtTime(0,t+3.4);
+    s.connect(b); b.connect(g); g.connect(master); s.start(t); s.stop(t+3.5);
+  }
+  function speak(){
+    if(muted||!window.speechSynthesis)return;
+    try{
+      var u=new SpeechSynthesisUtterance('Welcome to Talgo'); u.lang='en-GB'; u.rate=.82; u.pitch=.85; u.volume=1;
+      var vs=speechSynthesis.getVoices(); var pick=null;
+      for(var i=0;i<vs.length&&!pick;i++){ if(/Daniel|UK English Male|Google UK English|Arthur|Oliver/i.test(vs[i].name))pick=vs[i]; }
+      for(var j=0;j<vs.length&&!pick;j++){ if(/^en/i.test(vs[j].lang))pick=vs[j]; }
+      if(pick)u.voice=pick; speechSynthesis.cancel(); speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  window.toggleSound=function(){
+    muted=!muted; document.getElementById('soundBtn').textContent=muted?'🔇':'🔊';
+    if(master)master.gain.value=muted?0:.9; if(muted&&window.speechSynthesis)speechSynthesis.cancel();
+  };
+  window.revealLogin=function(){
+    if(revealed)return; revealed=true; phase='stopped'; target=0;
+    document.getElementById('startWrap').classList.add('gone');
+    document.getElementById('loginBox').classList.add('show');
+    document.getElementById('heroWelcome').classList.add('show');
+    ctl(1);
+  };
+  window.beginJourney=function(){
+    if(phase!=='idle')return;
+    document.getElementById('startWrap').classList.add('gone');
+    if(RM){ revealLogin(); return; }
+    audioInit(); if(AC&&AC.state==='suspended')AC.resume();
+    if(master)master.gain.value=muted?0:.9;
+    ctl(1);
+    phase='go'; target=1; passBy(); trainStart=performance.now()+300;
+    tm=setTimeout(function(){
+      if(revealed)return; phase='stop'; target=0; stationChime(); speak();
+      document.getElementById('heroWelcome').classList.add('show');
+    },3600);
+  };
+
+  function startLoop(){ if(!loopOn){ loopOn=true; last=performance.now(); requestAnimationFrame(frame); } }
+  window.restartJourney=function(){
+    clearTimeout(tm); revealed=false; phase='idle'; target=.1; speed=.1;
+    killAudio(); trainStart=0; trainEl.setAttribute('transform','translate(-1400 30)');
+    document.getElementById('startWrap').classList.remove('gone');
+    document.getElementById('loginBox').classList.remove('show');
+    document.getElementById('heroWelcome').classList.remove('show');
+    ctl(0);
+    var pw=document.getElementById('pwdInput'); if(pw)pw.value='';
+    var er=document.getElementById('loginError'); if(er)er.style.display='none';
+    var w=document.querySelector('.hero-word'); w.style.animation='none'; void w.offsetWidth; w.style.animation='';
+    startLoop();
+  };
+  function frame(t){
+    if(screenEl.style.display==='none'){ loopOn=false; return; }
+    var dt=Math.min((t-last)/1000||0,.05); last=t;
+    if(trainStart){ var p=(t-trainStart)/3400; if(p<0)p=0; if(p>=1){p=1;trainStart=0;} var e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; trainEl.setAttribute('transform','translate('+(-1400+3200*e).toFixed(1)+' 30)'); }
+    var k=phase==='stop'?.9:(phase==='go'?1.6:3); speed+=(target-speed)*(1-Math.exp(-dt*k));
+    if(phase==='stop'&&speed<.28&&!revealed){ hiss(); revealLogin(); phase='stop'; }
+    layers.forEach(function(l){ l.o+=760*l.k*speed*dt; l.e.setAttribute('transform','translate('+(-(l.o%l.w))+' 0)'); });
+    scene.style.transform='translateY('+(Math.sin(t/38)*speed*1.4).toFixed(2)+'px)';
+    var act=(phase==='go'||phase==='stop'); if(rumbleGain)rumbleGain.gain.value=act?Math.min(.32,speed*.32):0;
+    if(AC&&act&&speed>.2){ clack+=dt; if(clack>.62/speed){ clack=0; tick(.05*speed); } }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  var _ea=window.enterApp;
+  if(typeof _ea==='function'){ window.enterApp=function(){ killAudio(); return _ea.apply(this,arguments); }; }
+  var _lo=window.logout;
+  if(typeof _lo==='function'){ window.logout=function(){ var r=_lo.apply(this,arguments); startLoop(); return r; }; }
+})();
 </script>
 </body>
 </html>
